@@ -1,5 +1,8 @@
-# specification-template
-Template for a new Report, Note or specification using ReSpec, etc.
+ActivityPub API Task Force Repository
+
+Conveners / co-leads:
+* Emilia S.
+* Evan P.
 
 To customize for a new specification:
 
