@@ -1,7 +1,7 @@
 ActivityPub API Task Force Repository
 
 Conveners / co-leads:
-* Emilia S.
+* Emelia S.
 * Evan P.
 
 To customize for a new specification:
