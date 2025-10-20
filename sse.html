@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Server-Sent Events For the ActivityPub API</title>
+    <script
+      src="https://www.w3.org/Tools/respec/respec-w3c"
+      async
+      class="remove"
+    ></script>
+    <script class="remove">
+      var respecConfig = {
+        specStatus: "CG-DRAFT",
+        editors: [
+          {
+            name: "Evan Prodromou",
+            company: "Social Web Foundation",
+            companyURL: "https://socialwebfoundation.org/",
+            w3cid: 43626,
+          },
+        ],
+        github: {
+          branch: "main",
+          repoURL: "https://github.com/swicg/activitypub-api",
+        },
+        includePermalinks: false,
+        license: "w3c-software-doc",
+        group: "socialcg",
+        wgPublicList: "public-swicg",
+        edDraftURI: "https://swicg.github.io/activitypub-api/sse",
+        shortName: "activitypub-api-sse"
+      };
+    </script>
+    <style>
+      table td,
+      table td * {
+        vertical-align: top;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 id="title">Server-Sent Events For the ActivityPub API</h1>
+    <section id="abstract">
+      <p>
+        This document describes an application of Server-Sent Events to the
+        ActivityPub API.
+      </p>
+    </section>
+    <section id="sotd">
+      <p>
+        This is an experimental specification and is undergoing regular
+        revisions.
+      </p>
+    </section>
+    <section id="introduction">
+      <h1>Introduction</h1>
+      <p>
+        The [[[!ActivityPub]]] API is a RESTful interface for social networking
+        servers. It provides a readable interface for locally-hosted objects via
+        HTTP GET to their <code>id</code> property URL, and for remotely-hosted
+        objects via the <code>proxyUrl</code> endpoint. A writeable interface is
+        provided with an HTTP POST to the user&apos;s
+        <code>outbox</code> collection.
+      </p>
+      <p>
+        To get updated versions of an object or collection, the client
+        application has to repeatedly fetch the object -- "polling" for updates
+        at a given interval. This has three disadvantages:
+      </p>
+      <ul>
+        <li>
+          If changes are made between polls, the representation in the client
+          application is out of synch until the next poll.
+        </li>
+        <li>
+          If the object is unchanged between polling requests, resources on the
+          client and server are wasted for no user benefit.
+        </li>
+        <li>
+          A client representation, like a mobile app screen or a Web page, may
+          reference dozens or even hundreds of different objects, each of which
+          needs to be polled separately.
+        </li>
+      </ul>
+      <p>
+        One alternative to the polling model is <em>server push</em>. In this
+        architecture, the client establishes a long-running connection to the
+        server. The server then sends update notifications to the client, as
+        close to the actual modification time as possible, so that the client
+        can modify its local representation of the object.
+      </p>
+      <p>
+        Several server push technologies exist in the Web ecosystem. This
+        document describes an application of [[[!eventsource]]] to the
+        ActivityPub API. Server-Sent Events have the advantage of being
+        well-supported in many browser environments, and easy to support in
+        other contexts. Their downside, compared to some other technologies such
+        as [[[websockets]]], is that they are one-way and read-only; the server
+        can send updates to the client, but the client cannot use the same
+        channel to send updates to the server. The POST interface through the
+        user&apos;s <code>outbox</code> should suffice for most applications.
+      </p>
+      <p>
+        This specification uses a constrained subset of the
+        [[[!activitystreams-vocabulary]]] to represent changes to ActivityPub
+        objects. This has the advantage of not requiring a separate vocabulary
+        or format for changes, which are already well represented in AS2. On the
+        downside, it blurs the line between the data to be represented, and the
+        changes to that data.
+      </p>
+    </section>
+    <section id="user-stories" class="informative">
+      <h2>User Stories</h2>
+      <p>
+        The following user stories illustrate how this specification may be
+        used:
+      </p>
+      <ul>
+        <li>
+          <strong>As an ActivityPub client software developer</strong> I want to
+          receive a notification of updates to an object represented in my
+          interface, so that I can show the user an up-to-date version.
+        </li>
+        <li>
+          <strong>As an ActivityPub client software developer</strong> I want to
+          receive a notification of the deletion of an object represented in my
+          interface, so that I can remove it, or replace it with a tombstone
+          representation.
+        </li>
+        <li>
+          <strong>As an ActivityPub client software developer</strong> I want to
+          receive a notification of items added to a collection represented in
+          my interface, so that I can show the user the new items without
+          reloading the whole collection.
+        </li>
+        <li>
+          <strong>As an ActivityPub client software developer</strong> I want to
+          receive a notification of items removed from a collection represented
+          in my interface, so that I can hide the removed items without
+          reloading the whole collection.
+        </li>
+      </ul>
+    </section>
+    <section id="discovery">
+      <h1>Discovery</h1>
+      <p>
+        The publisher of an ActivityPub object can declare an endpoint to
+        retrieve an event stream for events related to that object with the
+        <a>eventStream</a> property.
+      </p>
+      <p>
+        <a>Events</a> in the event stream SHOULD have either the object, or one
+        of its object properties, as the <code>object</code> or
+        <code>target</code> of the event.
+      </p>
+      <aside class="example">
+        <pre class="json">
+          {
+            "@context": [
+              "https://www.w3.org/ns/activitystreams",
+              "https://purl.archive.org/socialweb/sse"
+            ],
+            "id": "https://social.example/note/1",
+            "type": "Note",
+            "content": "Hello World",
+            "to": "as:Public",
+            "replies": "https://social.example/note/1/replies",
+            "shares": "https://social.example/note/1/shares",
+            "likes": "https://social.example/note/1/likes",
+            "attributedTo": "https:/social.example/user/alyssa",
+            "eventStream": "https://social.example/stream?object=/note/1"
+          }
+        </pre>
+      </aside>
+    </section>
+    <section id="authentication">
+      <h1>Authentication</h1>
+      <p>
+        The client application MAY use the <code>Authorization</code> header to
+        pass an [[[rfc6749]]] access token to the server.
+      </p>
+      <p>
+        Because the <code>EventSource</code> interface does not enable passing
+        custom headers, the client application MAY pass the access token as an
+        URL parameter <code>access_token</code>.
+      </p>
+      <aside class="example">
+        <pre class="javascript">
+          const accessToken = "some_token_here"
+          const res = await fetch("https://social.example/note/1")
+          const note = await res.json()
+          const eventStream = new URL(note.eventStream)
+          eventStream.searchParams.set('access_token', accessToken)
+          const source = new EventSource(eventStream)
+          source.onmessage = (event) => {
+            console.log('Message:', event.data);
+          }
+        </pre>
+      </aside>
+    </section>
+    <section id="events">
+      <h1>Events</h1>
+      <p>
+        Events from the server are in the form of [[[!activitystreams-core]]]
+        Activity objects, in [[[!json-ld]]] format.
+      </p>
+      <p>
+        Activity objects MAY include an <code>actor</code> property, and MAY
+        include an <code>id</code> property.
+      </p>
+      <section id="add">
+        <h2>Add</h2>
+        <p>
+          An <code>Add</code> event is sent when a new item is added to a
+          collection.
+        </p>
+        <aside class="example">
+          <p>
+            In this example, the client has requested an event stream for the
+            inbox collection <code>https://ideas.example/user/18/inbox</code>. A
+            new <code>Like</code> activity has been received from a remote
+            server.
+          </p>
+          <pre>
+            data: {
+            data:   "@context": "https://www.w3.org/ns/activitystreams",
+            data:   "type": "Add",
+            data:   "summary": "Igor's like activity was added to the inbox",
+            data:   "object": {
+            data:     "id": "https://social.example/like/11802",
+            data:     "type": "Like",
+            data:     "summary": "Igor liked a note",
+            data:     "actor": {
+            data:        "id": "https://social.example/user/27127",
+            data:        "icon": {
+            data:           "type": "Link",
+            data:           "href": "https://files.social.example/335.jpg"
+            data:        },
+            data:        "name": "Igor Q. Actyr"
+            data      }
+            data:     "to": ["as:Public", "https://ideas.example/user/18"],
+            data:     "object": "https://third.example/note/4881"
+            data:   },
+            data:   "target": "https://ideas.example/user/18/inbox"
+            data: }
+
+          </pre>
+        </aside>
+        <aside class="example">
+          <p>
+            In this example, the client has requested an event stream for the
+            object <code>https://ideas.example/note/339</code>. A new reply has
+            been received by the server for this object; an
+            <code>Add</code> event is generated for adding the reply to the
+            <code>replies</code> collection.
+          </p>
+          <pre>
+            data: {
+            data:   "@context": "https://www.w3.org/ns/activitystreams",
+            data:   "type": "Add",
+            data:   "summary": "A note was added to the replies",
+            data:   "object": {
+            data:     "id": "https://social.example/note/138",
+            data:     "type": "Note",
+            data:     "content": "I disagree!",
+            data:     "to": ["as:Public", "https://ideas.example/user/18"],
+            data:     "inReplyTo": "https://ideas.example/note/339"
+            data:   },
+            data:   "target": "https://ideas.example/note/339/replies"
+            data: }
+
+          </pre>
+        </aside>
+      </section>
+      <section id="remove">
+        <h2>Remove</h2>
+        <p>
+          A <code>Remove</code> event is sent when an existing item is removed
+          from a collection.
+        </p>
+        <aside class="example">
+          <p>
+            In this example, the client has requested an event stream for the
+            collection <code>https://photos.example/album/31939</code>. The
+            album&apos;s owner has removed a photo from the collection.
+          </p>
+          <pre>
+            data: {
+            data:   "@context": "https://www.w3.org/ns/activitystreams",
+            data:   "id": "https://photos.example/remove/2102",
+            data:   "actor": "https://photos.example/user/25863",
+            data:   "to": "https://photos.example/user/25863/followers",
+            data:   "type": "Remove",
+            data:   "object": "https://photos.example/photo/5821",
+            data:   "target": "https://photos.example/album/31939",
+            data:   "summary": "The owner removed this photo from the album"
+            data: }
+
+          </pre>
+        </aside>
+        <aside class="example">
+          <p>
+            In this example, the client has requested an event stream for the
+            collection <code>https://other.example/user/20550/followers</code>,
+            the <code>followers</code> collection of an actor. One of the
+            followers in the collection has unfollowed the main actor using an
+            <code>Undo</code> activity. Note that the <code>Undo</code> activity
+            is not directly represented in this event.
+          </p>
+          <pre>
+            data: {
+            data:   "@context": "https://www.w3.org/ns/activitystreams",
+            data:   "type": "Remove",
+            data:   "summary": "A follower unfollowed the actor",
+            data:   "object": "https://third.example/user/24176",
+            data:   "target": "https://other.example/user/20550/followers"
+            data: }
+
+          </pre>
+        </aside>
+      </section>
+      <section id="update">
+        <h2>Update</h2>
+        <p>
+          An <code>Update</code> event is sent when an object has been changed.
+          The <code>object</code> property of the event should contain a full
+          representation of the changed object.
+        </p>
+        <aside class="example">
+          <p>
+            In this example, the client has requested an event stream for the
+            <code>Note</code> object
+            <code>https://social.example/note/9891</code>. The note&apos;s
+            author has updated the content of the note.
+          </p>
+          <pre>
+            data: {
+            data:   "@context": "https://www.w3.org/ns/activitystreams",
+            data:   "id": "https://social.example/update/10224",
+            data:   "type": "Update",
+            data:   "actor": "https://social.example/person/4806",
+            data:   "to": ["as:Public"],
+            data:   "summary": "The author updated their note",
+            data:   "object": {
+            data:      "id": "https://social.example/note/9891",
+            data:      "type": "Note",
+            data:      "content": "Hello World, actually!",
+            data:      "attributedTo": "https://social.example/person/4806",
+            data:      "to": ["as:Public"]
+            data:   }
+            data: }
+
+          </pre>
+        </aside>
+        <aside class="example">
+          <p>
+            In this example, the client has requested an event stream for the
+            <code>Note</code> object
+            <code>https://social.example/note/9891</code>. One of the actors
+            that has replied to the note has changed their avatar image.
+          </p>
+          <pre>
+            data: {
+            data:   "@context": "https://www.w3.org/ns/activitystreams",
+            data:   "id": "https://other.example/update/14092",
+            data:   "type": "Update",
+            data:   "actor": "https://other.example/person/4607",
+            data:   "summary": "The actor updated their avatar",
+            data:   "object": {
+            data:      "id": "https://other.example/person/4607",
+            data:      "type": "Person",
+            data:      "summary": "An example person",
+            data:      "icon": "https://other.example/files/4607-b.jpg"
+            data:   }
+            data: }
+
+          </pre>
+        </aside>
+      </section>
+      <section id="delete">
+        <h2>Delete</h2>
+        <p>
+          The <code>Delete</code> activity is sent when an object has been
+          deleted.
+        </p>
+        <aside class="example">
+          <p>
+            In this example, the client has requested an event stream for the
+            <code>Note</code> object
+            <code>https://social.example/note/4023</code>. The note&apos;s
+            author has deleted the note.
+          </p>
+          <pre>
+            data: {
+            data:   "@context": "https://www.w3.org/ns/activitystreams",
+            data:   "id": "https://social.example/delete/23978",
+            data:   "type": "Delete",
+            data:   "summary": "The note has been deleted",
+            data:   "object": "https://social.example/note/4023"
+            data: }
+
+          </pre>
+        </aside>
+      </section>
+    </section>
+    <section id="remote">
+      <h1>Proxy Event Stream</h1>
+      <p>
+        The client may want to be notified of changes to remote objects; that
+        is, objects hosted on remote servers. Similar to the
+        <code>proxyUrl</code> endpoint, a publisher can share a
+        <code>proxyEventStream</code> property in the
+        <code>endpoints</code> property of an actor to indicate a local proxy
+        URL that can be used to be notified of events about remote objects.
+      </p>
+      <aside class="example">
+        <p>
+          In this example, an ActivityPub actor includes a
+          <code>proxyEventStream</code> property.
+        </p>
+        <p class="json">
+          { "@context": [ "https://www.w3.org/ns/activitystreams",
+          "https://purl.archive.org/socialweb/sse" ], "id":
+          "https://social.example/person/29504", "name": "A. Person", "inbox":
+          "https://social.example/person/29504/inbox", "outbox":
+          "https://social.example/person/29504/outbox", "followers":
+          "https://social.example/person/29504/followers", "following":
+          "https://social.example/person/29504/following", "liked":
+          "https://social.example/person/29504/liked", "endpoints": {
+          "proxyUrl": "https://social.example/proxy", "proxyEventStream":
+          "https://social.example/events" } }
+        </p>
+      </aside>
+      <p>
+        The proxy event stream URL takes two arguments (in addition to any
+        arguments defined in the URL):
+      </p>
+      <ul>
+        <li><code>id</code>: The id of the object to get events for</li>
+        <li>
+          <code>access_token</code>: An OAuth 2.0 access token for
+          authentication
+        </li>
+      </ul>
+      <aside class="example">
+        <p>
+          This example shows how to follow events for a remote object in a Web
+          application.
+        </p>
+        <pre class="javascript">
+          const myActorId = "https://social.example/person/32015"
+          const remoteCollectionId = "https://other.example/person/734/outbox"
+          const myAccessToken = "some_token_here"
+
+          const res = await fetch(myActorId)
+          const actor = await res.json()
+          const proxyEventStream = new URL(actor.endpoints.proxyEventStream)
+          proxyEventStream.searchParams.set('id', remoteCollectionId)
+          proxyEventStream.searchParams.set('access_token', myAccessToken)
+          const es = new EventSource(proxyEventStream)
+        </pre>
+      </aside>
+    </section>
+    <section id="security" class="informative">
+      <h1>Security Considerations</h1>
+      <section id="oauth">
+        <h2>OAuth 2.0</h2>
+        <p>
+          Including the <code>access_token</code> in the URL for the
+          <code>EventSource</code> can leak the access token; the token will be
+          embedded when the URL is logged. Server software can mitigate this
+          issue by obscuring the access token in server logs, for example, by
+          replacing it with a string like "XXXXXXXX" or "********".
+        </p>
+      </section>
+    </section>
+    <section id="implementation" class="informative">
+      <h1>Implementation Notes</h1>
+      <section id="client">
+        <h2>Client</h2>
+        <p>
+          Real-time server updates are easier to process with a
+          <a
+            href="https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller"
+            >model-view-controller</a
+          >
+          or similar architecture. The event handler, for server events, can
+          look up models by id and call the appropriate methods to change the
+          models and, consequently, change all the views that depend on that
+          model.
+        </p>
+        <aside class="example">
+          <p>
+            In this (optimistic) example code, a web page maintains a map of
+            models by <code>id</code>, and updates them based on the data in the
+            events.
+          </p>
+          <pre class="javascript">
+
+            const accessToken = "some_token_here"
+            const id = "https://social.example/note/1"
+
+            const models = new Map()
+
+            const res = await fetch(id)
+            const json = await res.json()
+
+            const model = new Model(json)
+            models.set(id, model)
+
+            const eventStream = new URL(json.eventStream)
+            eventStream.searchParams.set('access_token', accessToken)
+            const source = new EventSource(eventStream)
+
+            source.onmessage = (event) => {
+              const activity = JSON.parse(event.data)
+              switch (activity.type) {
+                case "Add":
+                  const id = toId(activity.target)
+                  const collection = models.get(id)
+                  const item = new Model(activity.object)
+                  models.set(item.id, item)
+                  // mutate model, possibly triggering view updates
+                  collection.add(item)
+                  break
+                case "Remove":
+                  const id = toId(activity.target)
+                  const collection = models.get(id)
+                  const item = new Model(activity.object)
+                  // mutate model, possibly triggering view updates
+                  collection.remove(item.id)
+                  break
+                case "Update":
+                  const id = toId(activity.object)
+                  const model = models.get(id)
+                  // mutate model, possibly triggering view updates
+                  model.update(activity.object)
+                  break
+                case "Delete":
+                  const id = toId(activity.object)
+                  const model = models.get(id)
+                  // mutate model, possibly triggering view updates
+                  model.destroy()
+                  models.delete(id)
+                  break
+              }
+            }
+          </pre>
+        </aside>
+      </section>
+      <section id="server">
+        <h2>Server</h2>
+        <p>
+          This specification shifts complexity from the client to the server; responsibility for tracking which objects are related to which client is primarily on the side of the server.
+        </p>
+        <p>
+          One option for making this work is to keep a map of objects currently being observed with an event stream to the streams that are observing them. When a change is made to one of the objects, look up the relevant event streams, and send out an event on those streams. A reverse mapping (from streams to objects) can help with cleanup when the stream is torn down.
+        </p>
+        <p>
+          Server software that spans multiple processes will need to have a way to coordinate triggering event updates between processes. For example, if an activity is received from a remote server on a <code>sharedInbox</code> endpoint, the effects of that change should propagate to open connections, even if they're being handled by another process.
+        </p>
+      </section>
+    </section>
+    <section id="conformance">
+      <!-- This section is filled automatically by ReSpec. -->
+    </section>
+  </body>
+</html>
