@@ -231,7 +231,7 @@
           const webfinger = (webfingerEl) ? webfingerEl.value : null
           const actorId = await getActorIdFromWebfinger(webfinger)
           const origin = (new URL(actorId)).origin
-          as = getAsFromOrigin(origin);
+          as = await getAsFromOrigin(origin);
           sessionStorage.setItem('as_origin', origin)
           await startLogin(as, client);
         });
