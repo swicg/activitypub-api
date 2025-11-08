@@ -52,7 +52,7 @@
           'application/activity+json',
           'application/ld+json; profile="https://www.w3.org/ns/activitystreams"'
         ]
-        const actorLink = json.links.findOne(link =>
+        const actorLink = json.links.find(link =>
           link.rel == 'self' && TYPES.includes(link.type)
         )
         if (!actorLink) {
