@@ -1,0 +1,248 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>ActivityPub API OAuth demo</title>
+  </head>
+  <body>
+    <h1>ActivityPub API OAuth demo</h1>
+    <p>
+      <input type="webfinger"
+            placeholder="user@domain.example"
+            id="webfinger"
+            name="webfinger">
+      </input>
+      <button id="login">Login</button>
+      <button id="logout" disabled="disabled">Logout</button>
+      <button id="refresh" disabled="disabled">Refresh</button>
+    </p>
+    <p>
+      <span id="status"></span>
+    </p>
+    <script type="module">
+      // @ts-check
+      import * as oauth from 'https://unpkg.com/oauth4webapi@3.8.2/dist/index.js';
+
+      const redirectUri = window.location.origin + window.location.pathname;
+      const clientId = (new URL('cimd.json', window.location.href)).toString();
+
+      const allowInsecureRequests = false; // useful for testing locally
+
+      function setStatus(text) {
+        const el = document.getElementById("status");
+        if (el) {
+          el.textContent = text;
+        }
+      }
+
+      async function getActorIdFromWebfinger(webfinger) {
+        const [username, domain] = webfinger.split('@')
+        const url = `https://${domain}/.well-known/webfinger?resource=acct:${webfinger}`
+        const res = await fetch(url, {
+          headers: {Accept: 'application/xrd+json, application/json'}
+        })
+        if (!res.ok) {
+          throw new Error(`Could not load webfinger info for ${webfinger}`)
+        }
+        const json = await res.json()
+        if (!Array.isArray(json.links)) {
+          throw new Error(`Could not load webfinger info for ${webfinger}`)
+        }
+        const TYPES = [
+          'application/activity+json',
+          'application/ld+json; profile="https://www.w3.org/ns/activitystreams"'
+        ]
+        const actorLink = json.links.findOne(link =>
+          link.rel == 'self' && TYPES.includes(link.type)
+        )
+        if (!actorLink) {
+          throw new Error(`Could not find actor link for ${webfinger}`)
+        }
+        return actorLink.href
+      }
+
+      async function getAsFromOrigin(asOrigin) {
+        const res = await oauth.discoveryRequest(new URL(asOrigin), {
+          algorithm: "oauth2",
+          [oauth.allowInsecureRequests]: allowInsecureRequests,
+        });
+        if (!res.ok) {
+          throw new Error(`Bad status from discovery: ${res.status}`);
+        }
+        const as = await oauth.processDiscoveryResponse(
+          new URL(asOrigin),
+          res,
+        );
+        return as;
+      }
+
+      async function startLogin(as, client) {
+        setStatus("Logging in...");
+        const code_verifier = oauth.generateRandomCodeVerifier();
+        const code_challenge =
+          await oauth.calculatePKCECodeChallenge(code_verifier);
+        const state = oauth.generateRandomState();
+
+        sessionStorage.setItem("code_verifier", code_verifier);
+        sessionStorage.setItem("state", state);
+
+        const scope = "read write";
+
+        const authz = new URL(as.authorization_endpoint);
+        authz.searchParams.set("client_id", client.client_id);
+        authz.searchParams.set("redirect_uri", redirectUri);
+        authz.searchParams.set("response_type", "code");
+        authz.searchParams.set("scope", scope);
+        authz.searchParams.set("code_challenge", code_challenge);
+        authz.searchParams.set("code_challenge_method", "S256");
+        authz.searchParams.set("state", state);
+
+        window.location.href = authz.toString();
+      }
+
+      async function finishLogin(as, client) {
+        try {
+          const state = sessionStorage.getItem("state");
+          const code_verifier = sessionStorage.getItem("code_verifier");
+
+          const params = oauth.validateAuthResponse(
+            as,
+            client,
+            new URL(window.location.href),
+            state,
+          );
+
+          const response = await oauth.authorizationCodeGrantRequest(
+            as,
+            client,
+            oauth.None(),
+            params,
+            redirectUri,
+            code_verifier,
+            { [oauth.allowInsecureRequests]: allowInsecureRequests },
+          );
+
+          if (!response.ok) {
+            throw new Error(
+              `Bad status from token endpoint: ${response.status}`,
+            );
+          }
+
+          const result = await oauth.processAuthorizationCodeResponse(
+            as,
+            client,
+            response,
+          );
+
+          const { access_token, refresh_token } = result;
+
+          sessionStorage.setItem("access_token", access_token);
+          sessionStorage.setItem("refresh_token", refresh_token);
+
+          sessionStorage.removeItem("state");
+          sessionStorage.removeItem("code_verifier");
+
+          window.location.href = redirectUri;
+        } catch (error) {
+          setStatus(error.message);
+          sessionStorage.removeItem("state");
+          sessionStorage.removeItem("code_verifier");
+        }
+      }
+
+      async function refreshAccessToken(as, client) {
+        try {
+          const refreshToken = sessionStorage.getItem("refresh_token");
+
+          const response = await oauth.refreshTokenGrantRequest(
+            as,
+            client,
+            oauth.None(),
+            refreshToken,
+            { [oauth.allowInsecureRequests]: allowInsecureRequests },
+          );
+
+          if (!response.ok) {
+            throw new Error(
+              `Bad status from token endpoint: ${response.status}`,
+            );
+          }
+
+          const result = await oauth.processRefreshTokenResponse(
+            as,
+            client,
+            response,
+          );
+
+          const { access_token } = result;
+
+          sessionStorage.setItem("access_token", access_token);
+
+          setStatus("Token refreshed.");
+
+          window.location.href = redirectUri;
+        } catch (error) {
+          setStatus(error.message);
+        }
+      }
+
+      async function showUsername(as) {
+        const access_token = sessionStorage.getItem("access_token");
+        try {
+          setStatus("Logged in");
+        } catch (error) {
+          setStatus(error.message);
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", async () => {
+        const loginEl = document.getElementById("login");
+        const logoutEl = document.getElementById("logout");
+        const refreshEl = document.getElementById("refresh");
+        const webfingerEl = document.getElementById("webfinger");
+
+        const client = { client_id: clientId };
+        const asOrigin = sessionStorage.getItem('as_origin');
+        let as = null
+
+        if (asOrigin) {
+          as = await getAsFromOrigin(asOrigin)
+        }
+        const params = new URLSearchParams(window.location.search);
+        if (sessionStorage.getItem("access_token")) {
+          loginEl?.setAttribute("disabled", "disabled");
+          webfingerEl?.setAttribute("disabled", "disabled");
+          logoutEl?.removeAttribute("disabled");
+          refreshEl?.removeAttribute("disabled");
+          await showUsername(as);
+        } else if (params.get("state")) {
+          loginEl?.setAttribute("disabled", "disabled");
+          webfingerEl?.setAttribute("disabled", "disabled");
+          logoutEl?.setAttribute("disabled", "disabled");
+          refreshEl?.setAttribute("disabled", "disabled");
+          await finishLogin(as, client);
+        } else {
+          loginEl?.removeAttribute("disabled");
+          webfingerEl?.removeAttribute("disabled");
+          logoutEl?.setAttribute("disabled", "disabled");
+          refreshEl?.setAttribute("disabled", "disabled");
+        }
+        loginEl?.addEventListener("click", async () => {
+          const webfinger = (webfingerEl) ? webfingerEl.value : null
+          const actorId = await getActorIdFromWebfinger(webfinger)
+          const origin = (new URL(actorId)).origin
+          as = getAsFromOrigin(origin);
+          sessionStorage.setItem('as_origin', origin)
+          await startLogin(as, client);
+        });
+        logoutEl?.addEventListener("click", async () => {
+          sessionStorage.clear();
+          window.location.href = redirectUri;
+        });
+        refreshEl?.addEventListener("click", async () => {
+          await refreshAccessToken(as, client);
+        });
+      });
+    </script>
+  </body>
+</html>

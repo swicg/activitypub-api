@@ -1,0 +1,14 @@
+{
+  "client_id": "https://swicg.github.io/activitypub-api/examples/oauth/cimd.json",
+  "client_name": "Example OAuth Client for ActivityPub API",
+  "redirect_uris": [
+    "https://swicg.github.io/activitypub-api/examples/oauth/index.html"
+  ],
+  "token_endpoint_auth_method": "none",
+  "grant_types": ["authorization_code", "refresh_token"],
+  "response_types": ["code"],
+  "client_uri": "https://swicg.github.io/activitypub-api/examples/oauth/index.html",
+  "logo_uri": "https://localhost:${THIRD_PORT}/logo.png",
+  "software_id": "1027348F-E698-45C4-8900-F1144E57807C",
+  "software_version": "0.1.0"
+}
