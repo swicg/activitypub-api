@@ -1,0 +1,307 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36" version="29.2.9">
+  <diagram name="Page-1" id="0xJJ_Gkk1MLUkOg4WdUO">
+    <mxGraphModel grid="1" page="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-4" edge="1" parent="1" source="T3fvpf2xDR3ySL7_glz4-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="T3fvpf2xDR3ySL7_glz4-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-1" parent="1" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#330000;" value="" vertex="1">
+          <mxGeometry height="30" width="30" x="100" y="55" as="geometry" />
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-6" edge="1" parent="1" source="T3fvpf2xDR3ySL7_glz4-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="T3fvpf2xDR3ySL7_glz4-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="User enters identity string" vertex="1">
+          <mxGeometry height="60" width="120" x="200" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-8" edge="1" parent="1" source="T3fvpf2xDR3ySL7_glz4-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="260" y="320" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-13" connectable="0" parent="T3fvpf2xDR3ySL7_glz4-8" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Yes" vertex="1">
+          <mxGeometry relative="1" x="-0.3" y="2" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-22" edge="1" parent="1" source="T3fvpf2xDR3ySL7_glz4-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="T3fvpf2xDR3ySL7_glz4-21">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-23" connectable="0" parent="T3fvpf2xDR3ySL7_glz4-22" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="No" vertex="1">
+          <mxGeometry relative="1" x="-0.06" y="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-5" parent="1" style="rhombus;whiteSpace=wrap;html=1;" value="Is it a Webfinger?" vertex="1">
+          <mxGeometry height="80" width="80" x="220" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-14" edge="1" parent="1" source="T3fvpf2xDR3ySL7_glz4-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="T3fvpf2xDR3ySL7_glz4-9">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="260" y="400" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-20" edge="1" parent="1" source="T3fvpf2xDR3ySL7_glz4-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="T3fvpf2xDR3ySL7_glz4-19">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-9" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Get the origin of the Actor ID" vertex="1">
+          <mxGeometry height="60" width="120" x="200" y="420" as="geometry" />
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-10" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Discover the Actor ID using Webfinger" vertex="1">
+          <mxGeometry height="60" width="120" x="200" y="320" as="geometry" />
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-35" edge="1" parent="1" source="T3fvpf2xDR3ySL7_glz4-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="T3fvpf2xDR3ySL7_glz4-32">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-40" connectable="0" parent="T3fvpf2xDR3ySL7_glz4-35" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="No" vertex="1">
+          <mxGeometry relative="1" x="-0.06" y="2" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-38" edge="1" parent="1" source="T3fvpf2xDR3ySL7_glz4-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="T3fvpf2xDR3ySL7_glz4-33">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-39" connectable="0" parent="T3fvpf2xDR3ySL7_glz4-38" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Yes" vertex="1">
+          <mxGeometry relative="1" x="0.1" y="3" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-19" parent="1" style="rhombus;whiteSpace=wrap;html=1;" value="Does the origin support Protected Resource Metadata?" vertex="1">
+          <mxGeometry height="110" width="120" x="200" y="525" as="geometry" />
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-28" edge="1" parent="1" source="T3fvpf2xDR3ySL7_glz4-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="T3fvpf2xDR3ySL7_glz4-27">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-31" connectable="0" parent="T3fvpf2xDR3ySL7_glz4-28" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="No" vertex="1">
+          <mxGeometry relative="1" x="-0.1667" y="2" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-21" parent="1" style="rhombus;whiteSpace=wrap;html=1;" value="Is it an HTTPS URL?" vertex="1">
+          <mxGeometry height="80" width="80" x="390" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-25" edge="1" parent="1" source="T3fvpf2xDR3ySL7_glz4-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="T3fvpf2xDR3ySL7_glz4-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-24" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Treat the identity string as an Actor ID" vertex="1">
+          <mxGeometry height="60" width="120" x="370" y="320" as="geometry" />
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-26" edge="1" parent="1" source="T3fvpf2xDR3ySL7_glz4-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="430" y="316" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-30" connectable="0" parent="T3fvpf2xDR3ySL7_glz4-26" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Yes" vertex="1">
+          <mxGeometry relative="1" x="-0.2466" y="2" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-29" edge="1" parent="1" source="T3fvpf2xDR3ySL7_glz4-27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" target="T3fvpf2xDR3ySL7_glz4-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-27" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Invalid identity string" vertex="1">
+          <mxGeometry height="60" width="120" x="540" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-41" edge="1" parent="1" source="T3fvpf2xDR3ySL7_glz4-32" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="T3fvpf2xDR3ySL7_glz4-37">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="430" y="760" />
+              <mxPoint x="260" y="760" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-32" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Assume the origin is the authorization server" vertex="1">
+          <mxGeometry height="60" width="120" x="370" y="550" as="geometry" />
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-42" edge="1" parent="1" source="T3fvpf2xDR3ySL7_glz4-33" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="T3fvpf2xDR3ySL7_glz4-37">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-33" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Discover the authorization server using Protected Resource Metadata" vertex="1">
+          <mxGeometry height="60" width="120" x="200" y="670" as="geometry" />
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-44" edge="1" parent="1" source="T3fvpf2xDR3ySL7_glz4-37" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="T3fvpf2xDR3ySL7_glz4-43">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-45" connectable="0" parent="T3fvpf2xDR3ySL7_glz4-44" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Yes" vertex="1">
+          <mxGeometry relative="1" x="-0.32" y="-1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-47" edge="1" parent="1" source="T3fvpf2xDR3ySL7_glz4-37" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="T3fvpf2xDR3ySL7_glz4-46">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-48" connectable="0" parent="T3fvpf2xDR3ySL7_glz4-47" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="No" vertex="1">
+          <mxGeometry relative="1" x="-0.125" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-37" parent="1" style="rhombus;whiteSpace=wrap;html=1;align=center;" value="&lt;div style=&quot;orphans: 3; widows: 3;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Does the authorization server support Authorization Server Metadata?&lt;/span&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="110" width="120" x="200" y="800" as="geometry" />
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-58" edge="1" parent="1" source="T3fvpf2xDR3ySL7_glz4-43" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="T3fvpf2xDR3ySL7_glz4-57">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-43" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Get the Authorization Server Metadata" vertex="1">
+          <mxGeometry height="60" width="120" x="200" y="960" as="geometry" />
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-50" edge="1" parent="1" source="T3fvpf2xDR3ySL7_glz4-46" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="T3fvpf2xDR3ySL7_glz4-49">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-46" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Get the Actor" vertex="1">
+          <mxGeometry height="60" width="120" x="370" y="825" as="geometry" />
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-54" edge="1" parent="1" source="T3fvpf2xDR3ySL7_glz4-49" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" target="T3fvpf2xDR3ySL7_glz4-27">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="775" y="837.5" as="sourcePoint" />
+            <mxPoint x="760" y="240" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-55" connectable="0" parent="T3fvpf2xDR3ySL7_glz4-54" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="No" vertex="1">
+          <mxGeometry relative="1" x="-0.7516" y="-3" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-64" edge="1" parent="1" source="T3fvpf2xDR3ySL7_glz4-49" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="T3fvpf2xDR3ySL7_glz4-53">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-76" connectable="0" parent="T3fvpf2xDR3ySL7_glz4-64" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Yes" vertex="1">
+          <mxGeometry relative="1" x="-0.3037" y="-1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-49" parent="1" style="rhombus;whiteSpace=wrap;html=1;" value="Does the actor declare OAuth endpoints?" vertex="1">
+          <mxGeometry height="115" width="110" x="540" y="797.5" as="geometry" />
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-62" edge="1" parent="1" source="T3fvpf2xDR3ySL7_glz4-51" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="T3fvpf2xDR3ySL7_glz4-60" value="Yes">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-68" edge="1" parent="1" source="T3fvpf2xDR3ySL7_glz4-51" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="T3fvpf2xDR3ySL7_glz4-66">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-69" connectable="0" parent="T3fvpf2xDR3ySL7_glz4-68" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="No" vertex="1">
+          <mxGeometry relative="1" x="0.0222" y="-3" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-51" parent="1" style="rhombus;whiteSpace=wrap;html=1;" value="Does the authorization server support CIMD?" vertex="1">
+          <mxGeometry height="110" width="110" x="205" y="1180" as="geometry" />
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-73" edge="1" parent="1" source="T3fvpf2xDR3ySL7_glz4-53" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="T3fvpf2xDR3ySL7_glz4-65">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-77" connectable="0" parent="T3fvpf2xDR3ySL7_glz4-73" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Yes" vertex="1">
+          <mxGeometry relative="1" x="-0.6" y="4" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-74" edge="1" parent="1" source="T3fvpf2xDR3ySL7_glz4-53" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="T3fvpf2xDR3ySL7_glz4-72">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-75" connectable="0" parent="T3fvpf2xDR3ySL7_glz4-74" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="No" vertex="1">
+          <mxGeometry relative="1" x="-0.0667" y="-1" as="geometry">
+            <mxPoint x="1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-53" parent="1" style="rhombus;whiteSpace=wrap;html=1;" value="Does the Actor support FEP D8C2?" vertex="1">
+          <mxGeometry height="120" width="125" x="532.5" y="980" as="geometry" />
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-59" edge="1" parent="1" source="T3fvpf2xDR3ySL7_glz4-57" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="T3fvpf2xDR3ySL7_glz4-51">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-57" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Get Authorization, Access Token endpoints from metadata" vertex="1">
+          <mxGeometry height="60" width="120" x="200" y="1080" as="geometry" />
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-63" edge="1" parent="1" source="T3fvpf2xDR3ySL7_glz4-60" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="T3fvpf2xDR3ySL7_glz4-61">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-60" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Use CIMD as client ID" vertex="1">
+          <mxGeometry height="60" width="120" x="200" y="1350" as="geometry" />
+        </mxCell>
+        <mxCell id="Sv35R7PcD6LTFg5pt79u-12" edge="1" parent="1" source="T3fvpf2xDR3ySL7_glz4-61" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="Sv35R7PcD6LTFg5pt79u-11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-61" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Execute authorization code flow with client ID, authorization endpoint, and access token endpoint" vertex="1">
+          <mxGeometry height="80" width="140" x="190" y="1480" as="geometry" />
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-67" edge="1" parent="1" source="T3fvpf2xDR3ySL7_glz4-65" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="T3fvpf2xDR3ySL7_glz4-61">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-65" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Use application object as client ID" vertex="1">
+          <mxGeometry height="60" width="120" x="360" y="1350" as="geometry" />
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-70" edge="1" parent="1" source="T3fvpf2xDR3ySL7_glz4-66" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="T3fvpf2xDR3ySL7_glz4-65">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-71" connectable="0" parent="T3fvpf2xDR3ySL7_glz4-70" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Yes" vertex="1">
+          <mxGeometry relative="1" x="0.0182" y="-1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Sv35R7PcD6LTFg5pt79u-1" edge="1" parent="1" source="T3fvpf2xDR3ySL7_glz4-66" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="T3fvpf2xDR3ySL7_glz4-78">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Sv35R7PcD6LTFg5pt79u-13" connectable="0" parent="Sv35R7PcD6LTFg5pt79u-1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="No" vertex="1">
+          <mxGeometry relative="1" x="-0.7412" y="2" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-66" parent="1" style="rhombus;whiteSpace=wrap;html=1;" value="Does the authorization server support FEP D8C2?" vertex="1">
+          <mxGeometry height="120" width="120" x="360" y="1175" as="geometry" />
+        </mxCell>
+        <mxCell id="Sv35R7PcD6LTFg5pt79u-4" edge="1" parent="1" source="T3fvpf2xDR3ySL7_glz4-72" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="Sv35R7PcD6LTFg5pt79u-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Sv35R7PcD6LTFg5pt79u-10" connectable="0" parent="Sv35R7PcD6LTFg5pt79u-4" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Yes" vertex="1">
+          <mxGeometry relative="1" x="-0.5226" y="2" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-72" parent="1" style="rhombus;whiteSpace=wrap;html=1;" value="Does the actor declare OAuth client registration endpoint?" vertex="1">
+          <mxGeometry height="110" width="120" x="710" y="985" as="geometry" />
+        </mxCell>
+        <mxCell id="Sv35R7PcD6LTFg5pt79u-3" edge="1" parent="1" source="T3fvpf2xDR3ySL7_glz4-78" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="Sv35R7PcD6LTFg5pt79u-2">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="875" y="1380" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Sv35R7PcD6LTFg5pt79u-9" connectable="0" parent="Sv35R7PcD6LTFg5pt79u-3" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Yes" vertex="1">
+          <mxGeometry relative="1" x="-0.7438" y="-1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Sv35R7PcD6LTFg5pt79u-6" edge="1" parent="1" source="T3fvpf2xDR3ySL7_glz4-78" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="T3fvpf2xDR3ySL7_glz4-27">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="960" y="1235" as="sourcePoint" />
+            <mxPoint x="880" y="200" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Sv35R7PcD6LTFg5pt79u-8" connectable="0" parent="Sv35R7PcD6LTFg5pt79u-6" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="No" vertex="1">
+          <mxGeometry relative="1" x="-0.8483" y="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="T3fvpf2xDR3ySL7_glz4-78" parent="1" style="rhombus;whiteSpace=wrap;html=1;" value="Does the authorization server support dynamic registration?" vertex="1">
+          <mxGeometry height="105" width="110" x="820" y="1182.5" as="geometry" />
+        </mxCell>
+        <mxCell id="Sv35R7PcD6LTFg5pt79u-7" edge="1" parent="1" source="Sv35R7PcD6LTFg5pt79u-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="T3fvpf2xDR3ySL7_glz4-61">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Sv35R7PcD6LTFg5pt79u-2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Dynamically register a client ID" vertex="1">
+          <mxGeometry height="60" width="120" x="625" y="1350" as="geometry" />
+        </mxCell>
+        <mxCell id="Sv35R7PcD6LTFg5pt79u-5" edge="1" parent="1" source="T3fvpf2xDR3ySL7_glz4-72" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" target="T3fvpf2xDR3ySL7_glz4-27">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1030" y="1040" as="sourcePoint" />
+            <mxPoint x="850" y="200" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Sv35R7PcD6LTFg5pt79u-11" parent="1" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" value="" vertex="1">
+          <mxGeometry height="40" width="40" x="240" y="1620" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
