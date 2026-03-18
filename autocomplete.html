@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>ActivityPub Autocomplete Search API Endpoint</title>
+  <script src="https://www.w3.org/Tools/respec/respec-w3c" class="remove" defer></script>
+  <script class="remove">
+    var respecConfig = {
+      specStatus: "CG-DRAFT",
+      editors: [
+        {
+          name: "Evan Prodromou",
+          company: "Social Web Foundation",
+          companyURL: "https://socialwebfoundation.org/",
+          w3cid: 43626,
+        },
+      ],
+      github: {
+        branch: "main",
+        repoURL: "https://github.com/swicg/activitypub-api",
+      },
+      includePermalinks: false,
+      license: "w3c-software-doc",
+      group: "socialcg",
+      wgPublicList: "public-swicg",
+      edDraftURI: "https://swicg.github.io/activitypub-api/autocomplete",
+      shortName: "activitypub-api-autocomplete"
+    }
+  </script>
+  <style>
+    table td,
+    table td * {
+      vertical-align: top;
+    }
+  </style>
+</head>
+
+<body>
+  <section id="abstract">
+    <p>
+      This document defines an autocomplete search endpoint and endpoint discovery mechanism for [[ActivityPub]] API
+      clients.
+    </p>
+  </section>
+  <section id="sotd">
+  </section>
+  <section class="informative">
+    <h2>Introduction</h2>
+    <p>
+      Social software clients often include a text composition interface. When the user wants to mention another actor,
+      they can type a few letters of the actor's name (or other properties), and get a popup selection of matching
+      actors.
+    </p>
+    <aside class="example">
+      <p>An example text-entry interface with autocomplete.</p>
+      <img src="./Autocomplete.png"></img>
+    </aside>
+    <p>
+      Some social software clients also use typeahead dropdown elements to choose actors in other contexts besides
+      tagging.
+    </p>
+    <aside class="example">
+      <p>An interface for adding an actor to a contact list, using a typeahead dropdown.</p>
+      <img src="./AutocompleteDropdown.png"></img>
+    </aside>
+    <p>
+      Actor autocomplete search is useful in situations when:
+    <ul>
+      <li>
+        The pool of applicable actors is too large to show directly in a list.
+      </li>
+      <li>
+        Typing the full name or identifier for the actor is tiresome or errorprone.
+      </li>
+    </ul>
+    </p>
+    <section class="userstories">
+      <h3>User stories</h3>
+      <p>This specification is for the following user stories:</p>
+      <ul>
+        <p class="issue" data-number="24"></p>
+      </ul>
+    </section>
+  </section>
+  <section id="discovery">
+    <h2>Discovery</h2>
+    <p>
+      An [[[ActivityPub]]] API client operating on behalf of an actor can use the <a
+        href="https://www.w3.org/TR/activitypub/#actor-objects">actor object</a> to discover the autocomplete search
+      endpoint. The <a href="https://www.w3.org/TR/activitypub/#endpoints">endpoints</a> property of the actor includes
+      properties for useful API endpoints. The <a href="#actorAutocomplete">actorAutocomplete</a> property defines a
+      [[[RFC6570]]] for an endpoint with the behaviour defined below in <a href="#endpoint">Endpoint</a>. The URI
+      template takes a single argument, <code>q</code>, the text typed so far.
+    </p>
+    <aside class="example">
+      <p>
+        This is a minimal example of an actor with an <code>actorAutocomplete</code> endpoint.
+      </p>
+      <pre class="json-ld">
+        {
+          "@context": [
+            "https://www.w3.org/ns/activitystreams",
+            "https://swicg.github.io/activitypub-api/autocomplete"
+          ],
+          "id": "https://social.example/user/apuser1",
+          "type": "Person",
+          "to": "as:Public",
+          "preferredUsername": "apuser1",
+          "name": "ActivitPub Userone",
+          "inbox": "https://social.example/user/apuser1/inbox",
+          "outbox": "https://social.example/user/apuser1/outbox",
+          "endpoints": {
+            "actorAutocomplete": "https://social.example/search/actor/typeahead?search={q}"
+          }
+        }
+        </pre>
+    </aside>
+  </section>
+  <section id="endpoint">
+    <h2>Endpoint</h2>
+    <p>The endpoint URI template takes a single parameter, <code>q</code>, representing the text typed so far. The
+      endpoint SHOULD require authentication and SHOULD support bearer tokens as in [[RFC6750]].</p>
+    <aside class="example">
+      <p>
+        This is a minimal example of an HTTP request for the actor autocomplete endpoint. The client has filled in the
+        <code>q</code> parameter with the string <code>"ala"</code>. The OAuth bearer token is provided.
+      </p>
+      <pre class="HTTP">
+        GET /search/actor/typeahead?search=ala HTTP/1.1
+        Host: social.example
+        Accept: application/activity+json, application/ld+json, application/json
+        Authorization: Bearer CJz4LwUWgn1Xfgs4TB307
+      </pre>
+    </aside>
+    <p>The endpoint should return an [[[activitystreams-core]]] <a
+        href="https://www.w3.org/TR/activitystreams-core/#collections">Collection</a> of actor objects that match the
+      search parameter. The collection may use <a href="https://www.w3.org/TR/activitystreams-core/#paging">collection
+        paging</a>.</p>
+    <aside class="example">
+      <p>Example output from the actor autocomplete search endpoint.</p>
+      <pre>
+        {
+          "@context": "https://www.w3.org/ns/activitystreams",
+          "type": "Collection",
+          "id": "https://social.example/search/actor/typeahead?search=ala",
+          "totalItems": 3,
+          "items": [
+              {
+                  "id": "https://other.example/user/C6CEFD42-2109-4719-9E71-231804076FB7",
+                  "type": "Person",
+                  "name": "Alana Cooper",
+                  "preferredUsername": "coopera"
+              },
+              {
+                  "id": "https://third.example/actor/DJQ7R4Xw7mX8GWnueYPpL",
+                  "type": "Organization",
+                  "name": "Aaling Fisheries",
+                  "preferredUsername": "aalingvis1"
+              },
+              {
+                  "id": "https://fanclub.example/group/thelittlepills",
+                  "type": "Group",
+                  "name": "Alanis Morisette Fan Club",
+                  "preferredUsername": "thelittlepills"
+              }
+          ]
+      }
+      </pre>
+    </aside>
+    <p>
+      The pool of actors searched is server-defined. The actors found can come from the actor's followers or following
+      collections, from the local server user directory, from a global user directory, or any other source.
+    </p>
+    <p>
+      The matching algorithm is server-defined. The match can be on different properties of the actor, such as
+      <code>preferredUsername</code> or <code>name</code>, or on other properties. The match can be exact, or by prefix,
+      or fuzzy matching, or another matching algorithm.
+    </p>
+    <p>
+      The sorting order is descending by <a
+        href="https://en.wikipedia.org/wiki/Relevance_(information_retrieval)">relevance</a> as defined by the server
+      for autocompletion. The first items in the collection are the most relevant to the user&apos;s needs; later items
+      are less relevant. The actor relevance value is not represented by a property in the results.
+    </p>
+    <p>
+      All objects returned in the search results MUST be ActivityPub <a
+        href="https://www.w3.org/TR/activitypub/#actor-objects">actor objects</a>, with the required properties of
+      ActivityPub actors.
+    </p>
+    <p>
+      If there are no actors found that match the query parameter, the response MUST still be returned, with an empty
+      <code>Collection</code>. The HTTP status code MUST be 200.
+    </p>
+    <aside class="example">
+      <p>Example output from the actor autocomplete search endpoint with no matching actors.</p>
+      <pre>
+        {
+          "@context": "https://www.w3.org/ns/activitystreams",
+          "type": "Collection",
+          "id": "https://social.example/search/actor/typeahead?search=xyyngzl",
+          "totalItems": 0
+        }
+      </pre>
+    </aside>
+    <section id="errors">
+      <h3>Errors</h3>
+      <p>
+        In case of an error, when the endpoint cannot fulfill the request, it MUST return an [[[RFC7807]]] result.
+      </p>
+      <aside class="example">
+        <p>
+          An example error result, when the client has not provided authentication credentials.
+        </p>
+        <pre class="http">
+        HTTP/1.1 401 Unauthorized
+        Content-Type: application/problem+json
+        Content-Language: en
+
+        {
+          "type": "about:blank",
+          "status": "401",
+          "title": "Unauthorized",
+          "detail": "This endpoint requires an OAuth 2.0 bearer token"
+        }
+        </pre>
+      </aside>
+      <p>
+        This specification defines a custom problem detail type for a specific error situation. Many typeahead search systems require a minimum number of characters in the query parameter to execute a search, to prevent overly broad results. This error type is used if the minimum number of characters is not provided.
+      </p>
+      <aside class="example">
+        <p>
+          An error result indicating the minimum number of characters was not met.
+        </p>
+        <pre class="http">
+        HTTP/1.1 400 Bad Request
+        Content-Type: application/problem+json
+
+        {
+            "type": "https://swicg.github.io/activitypub-api/autocomplete#minimumChars",
+            "title": "Search param too small",
+            "detail": "The q parameter must be 4 characters or more",
+            "q": "al",
+            "minimum": 4
+        }
+        </pre>
+      </aside>
+    </section>
+  </section>
+  <section id="terms">
+    <h2>Terms</h2>
+    <p>The context URI for terms defined in this document is
+      <code>https://swicg.github.io/activitypub-api/autocomplete</code>. The namespace for the terms is
+      <code>https://swicg.github.io/activitypub-api/autocomplete#</code>.
+    </p>
+    <p>The following extension term is defined in this document.</p>
+    <section id="actorAutocomplete">
+      <h3>actorAutocomplete</h3>
+      <table>
+        <tbody>
+          <tr>
+            <td width="10%">
+              URI:
+            </td>
+            <td>
+              <code>https://swicg.github.io/activitypub-api/autocomplete#actorAutocomplete</code><br>
+              <code>autocomplete:actorAutocomplete</code><br>
+              <code>actorAutocomplete</code>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Notes:
+            </td>
+            <td>
+              Defines an endpoint for autocomplete search for actors. Discoverable as defined in <a
+                href="#discovery">Discovery</a>. An endpoint so described must behave as in <a
+                href="#endpoint">Endpoint</a>.
+            </td>
+          </tr>
+          <tr>
+            <td>Domain:</td>
+            <td><code>Object</code> (an ActivityPub <a href="https://www.w3.org/TR/activitypub/#actors">Actor</a>
+              <code>endpoints</code> object)
+            </td>
+          </tr>
+          <tr>
+            <td>Range:</td>
+            <td><code>xsd:anyURI</code></td>
+          </tr>
+          <tr>
+            <td>Functional:</td>
+            <td><code>true</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </section>
+  <section id="conformance">
+    <p>
+      This is required for specifications that contain normative material.
+    </p>
+  </section>
+</body>
+
+</html>

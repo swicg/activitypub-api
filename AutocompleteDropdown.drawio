@@ -1,0 +1,43 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.7.8 Chrome/128.0.6613.36 Electron/32.0.1 Safari/537.36" version="24.7.8">
+  <diagram name="Page-1" id="Ty4C-2BaTx8TEMsKF6R6">
+    <mxGraphModel dx="1554" dy="848" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="1pP0lSVcEegQL_N2my_s-2" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="120" y="80" width="460" height="330" as="geometry" />
+        </mxCell>
+        <mxCell id="1pP0lSVcEegQL_N2my_s-3" value="Add Person to Contact List" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="130" y="100" width="390" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="1pP0lSVcEegQL_N2my_s-4" value="OK" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="390" y="360" width="70" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="1pP0lSVcEegQL_N2my_s-5" value="Cancel" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="475" y="360" width="85" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="1pP0lSVcEegQL_N2my_s-6" value="Friends&lt;br&gt;Family&lt;br&gt;Work" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="240" y="140" width="320" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="1pP0lSVcEegQL_N2my_s-7" value="List:" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="140" y="140" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="1pP0lSVcEegQL_N2my_s-8" value="Dar_" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="240" y="230" width="320" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="1pP0lSVcEegQL_N2my_s-10" value="Person:" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="150" y="240" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="1pP0lSVcEegQL_N2my_s-11" value="Darius Kazemi&lt;br&gt;Darkwing Duck&lt;br&gt;John Darling&lt;br&gt;Drake&lt;br&gt;Darla" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="240" y="270" width="320" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="1pP0lSVcEegQL_N2my_s-12" value="" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="520" y="230" width="40" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="1pP0lSVcEegQL_N2my_s-13" value="" style="triangle;whiteSpace=wrap;html=1;rotation=90;" vertex="1" parent="1">
+          <mxGeometry x="530" y="235" width="20" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
