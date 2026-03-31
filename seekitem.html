@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset='utf-8'>
+  <title>Seek Item</title>
+  <script src='https://www.w3.org/Tools/respec/respec-w3c' async class='remove'></script>
+  <script class='remove'>
+    // All config options at https://respec.org/docs/
+    var respecConfig = {
+      specStatus: "unofficial",
+      includePermalinks: false,
+      editors: [
+        {
+          name: "Evan Prodromou",
+          company: "Social Web Foundation",
+          companyURL: "https://socialwebfoundation.org/",
+          w3cid: 43626,
+        },
+      ],
+      github: {
+        branch: "main",
+        repoURL: "https://github.com/swicg/activitypub-api",
+      },
+      license: "w3c-software-doc",
+      group: "socialcg",
+      wgPublicList: "public-swicg",
+      edDraftURI: "https://swicg.github.io/activitypub-api/seekitem",
+      shortName: "activitypub-api-seekitem"
+    };
+  </script>
+</head>
+
+<body>
+  <h1 id="title">Seek Item</h1>
+  <section id='abstract'>
+    <p></p>
+  </section>
+  <section id='sotd'>
+    <p>
+      This is an experimental specification and is undergoing regular revisions.
+    </p>
+  </section>
+  <section id="introduction">
+    <h2>Introduction</h2>
+    <p>
+      One way for ActivityPub API clients to efficiently use a reverse-chronological collection like the messages
+      collection is to store
+      a last-seen activity or object id.
+    </p>
+    <p>
+      To get the latest data, the client can get the latest page from the collection (<code>first</code> property), then
+      follow the
+      next properties of each page, until it finds a page with last-seen activity id in the items or orderedItems
+      property. All the data that has been read is the "latest data". The client might show the latest items first, and
+      then use scrolling to show earlier items.
+    </p>
+    <p>
+      One problem with this process is when the client state is dependent on previous state. So, the client has to cache
+      all the data in the latest pages until it finds the last-seen item, and then apply all the new activities in
+      order, forwards in time, in order to calculate the current state. This takes time and memory.
+    </p>
+    <p>
+      One way to improve this process is to have a feature for jumping directly to the page with the last-seen activity,
+      without reading all the later pages. Then, if the collection is bidirectionally navigable (it has next and prev
+      links on each page), the client can navigate forward in time, up to the current page.
+    </p>
+  </section>
+  <section id="terms">
+    <h2>Terms</h2>
+    <p>This specification introduces one new term, <code>seekItem</code>.</p>
+    <section id="context">
+      <h3>Context</h3>
+      <p>The term in this specification is defined in a JSON context document. Clients can use a version-stamped URL to
+        get compatible, or exact, context documents according to their expectations.</p>
+      <ul>
+        <li><code>https://purl.archive.org/socialweb/seekitem</code> is always the latest version of this context.</li>
+        <li><code>https://purl.archive.org/socialweb/seekitem/1.0.0</code> is the exact version described in this
+          version of this document.</li>
+        <li><code>https://purl.archive.org/socialweb/seekitem/1.0</code> may include bug fixes and corrections, but will
+          not add, modify or delete terms.</li>
+        <li><code>https://purl.archive.org/socialweb/seekitem/1</code> may include bug fixes and corrections, and may
+          add terms, but will not modify or delete terms.</li>
+      </ul>
+    </section>
+    <section id="seekItem">
+      <h3>seekItem</h3>
+      <table>
+        <tbody>
+          <tr>
+            <td width="10%">
+              URI:
+            </td>
+            <td>
+              <code>https://purl.archive.org/socialweb/seekitem#seekItem</code><br>
+              <code>seek:seekItem</code><br>
+              <code>seekItem</code>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Notes:
+            </td>
+            <td>
+              Defines an endpoint used to seek an item in this collection, as defined in the <a
+                href="#endpoint">Endpoint</a> section below.
+            </td>
+          </tr>
+          <tr>
+            <td>Domain:</td>
+            <td><code>Collection</code> (including <code>OrderedCollection</code>)</td>
+          </tr>
+          <tr>
+            <td>Range:</td>
+            <td><code>xsd:anyURI</code></td>
+          </tr>
+          <tr>
+            <td>Functional:</td>
+            <td><code>true</code></td>
+          </tr>
+        </tbody>
+      </table>
+      <aside class="example">
+        <p>An ActivityPub <code>OrderedCollection</code> with the <code>seekItem</code> endpoint defined.</p>
+        <pre class="json">
+          {
+              "@context": [
+                "https://www.w3.org/ns/activitystreams",
+                "https://purl.archive.org/socialweb/seekitem/1.0"
+              ],
+              "type": "OrderedCollection",
+              "name": "Evan's incoming MLS messages",
+              "id": "https://social.example/user/evan/messages",
+              "totalItems": 30108,
+              "first": "https://social.example/user/evan/messages/uSQOayNw",
+              "seekItem": "https://social.example/seek?collection=https://social.example/user/evan/messages"
+          }
+        </pre>
+      </aside>
+      <aside class="example">
+        <p>An ActivityPub <code>OrderedCollection</code> where the <code>seekItem</code> and <code>id</code> properties
+          are identical.</p>
+        <pre class="json">
+          {
+              "@context": [
+                "https://www.w3.org/ns/activitystreams",
+                "https://purl.archive.org/socialweb/seekitem/1.0"
+              ],
+              "type": "OrderedCollection",
+              "name": "Ben's incoming MLS messages",
+              "id": "https://other.example/user/nwqhFklGVSmJ-hvSQ-VPN/messages",
+              "totalItems": 983,
+              "first": "https://other.example/page/0AC4AB47-7680-4831-B706-0687B15CC587",
+              "seekItem": "https://other.example/user/nwqhFklGVSmJ-hvSQ-VPN/messages"
+          }
+        </pre>
+      </aside>
+    </section>
+  </section>
+  <section id="endpoint">
+    <h2>Endpoint</h2>
+    <p>The endpoint defined by the <code>seekItem</code> term is an HTTPS URL.</p>
+    <p>It MUST accept an additional <code>item</code> URL parameter, which is   the full ActivityPub object id for the item to be sought. The client MUST correctly add the <code>item</code> parameter, taking into account existing parameters for the endpoint, if any.</p>
+    <p>On success, the <code>Location</code> header of the returned entity MUST be the id of an ActivityPub object. If the sought item is in a page of the collection, it MUST be the id of that ActivityPub <code>CollectionPage</code> or <code>OrderedCollectionPage</code> object. If the collection contains the item directly in its <code>items</code> or <code>orderedItems</code> property, the endpoint MUST return the <code>Collection</code> or <code>OrderedCollection</code> itself.</p>
+    <p>On success, the HTTP status code MUST be <code>307 Temporary Redirect</code> or <code>308 Permanent Redirect</code>. A temporary redirect SHOULD be used if the item could be part of a different page or collection in a future request. A permanent redirect SHOULD be used if the item will always be part of the same page of this collection.</p>
+    <p>On failure, the endpoint SHOULD return a Problem Details document with <code>Content-Type</code> set to <code>application/problem+json</code>.</p>
+    <p>If the item in the <code>item</code> parameter is not in the <code>items</code> or <code>orderedItems</code> list of any of the pages of the collection, nor the collection itself, the HTTP status code MUST be <code>404 Not Found</code>.</p>
+    <p>The endpoint SHOULD support authentication methods commonly used with ActivityPub, including OAuth 2.0 and HTTP Signature.</p>
+    <p>If the authenticated user is not authorized to read the item in the <code>item</code> parameter, or the <code>Collection</code> or <code>CollectionPage</code> it is in, the HTTP status code MUST be <code>404 Not Found</code>. This prevents leaking information about the membership of an item in a collection.</p>
+
+    <aside class="example">
+      <p>An HTTP request seeking an item in a collection. Note that there are existing parameters on the URL, so the <code>item</code> parameter is correctly appended.</p>
+      <pre class="http">
+       GET /seek?collection=https://social.example/user/evan/messages&item=https://other.example/message/71802ABA-379C-4661-A8C9-99AC8346BA49 HTTP/1.1
+       Host: social.example
+       Authorization: Bearer yhOg1DVth6lEUOti_FC5T
+      </pre>
+    </aside>
+    <aside class="example">
+      <p>An HTTP response for the request in the previous example. The collection uses stable paging, so the item is always in the same page, and a permanent redirect is used.</p>
+      <pre class="http">
+       HTTP/1.1 308 Permanent Redirect
+       Location: https://social.example/user/evan/messages/lqtN1Zu6d-INYo9o-r06G
+      </pre>
+    </aside>
+    <aside class="example">
+      <p>An HTTP request seeking an item in a collection. The collection id is the same as the seek endpoint.</p>
+      <pre class="http">
+       GET /user/nwqhFklGVSmJ-hvSQ-VPN/messages&item=https://other.example/message/71802ABA-379C-4661-A8C9-99AC8346BA49 HTTP/1.1
+       Host: other.example
+       Authorization: Bearer wwi-EeLvJRUee4XIJGWEu
+      </pre>
+    </aside>
+    <aside class="example">
+      <p>An HTTP response for the request in the previous example. The collection uses unstable paging, so the response is a temporary redirect.</p>
+      <pre class="http">
+       HTTP/1.1 307 Temporary Redirect
+       Location: https://other.example/user/nwqhFklGVSmJ-hvSQ-VPN/messages?page=17
+      </pre>
+    </aside>
+    <aside class="example">
+      <p>The item is not a member of the collection.</p>
+      <pre class="http">
+       HTTP/1.1 404 Not Found
+       Content-Type: application/problem+json
+
+       {
+          "type": "about:blank",
+          "title": "Not Found",
+          "status": 404,
+          "details": "item not found"
+       }
+      </pre>
+    </aside>
+    <aside class="example">
+      <p>The authenticated user is not authorized to read the item or collection.</p>
+      <pre class="http">
+       HTTP/1.1 404 Not Found
+       Content-Type: application/problem+json
+
+       {
+          "type": "about:blank",
+          "title": "Not Found",
+          "status": 404,
+          "details": "item not found"
+       }
+      </pre>
+    </aside>
+  </section>
+  <section id='conformance'>
+    <!-- This section is filled automatically by ReSpec. -->
+  </section>
+</body>
+
+</html>
