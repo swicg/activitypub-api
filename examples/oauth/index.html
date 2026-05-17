@@ -79,7 +79,9 @@
       async function getAsFromActor(actorId) {
         const res = await fetch(actorId,
           {
-            'Accept': 'application/activity+json;q=1.0, application/ld+json;q=0.8, application/json;q=0.5'
+            headers: {
+              'Accept': 'application/activity+json;q=1.0, application/ld+json;q=0.8, application/json;q=0.5'
+            }
           }
         )
         if (!res.ok) {
