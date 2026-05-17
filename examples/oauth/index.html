@@ -141,17 +141,16 @@
       }
 
       async function discoverClient(as, origin) {
-          // let client_id
-          // if (as.client_id_metadata_document_supported) {
-          //   client_id = cimd_id;
-          // } else if (as.activitypub_object_id_as_client_id) {
-          //   client_id = d8c2_id;
-          // } else if (as.registration_endpoint) {
-          //   client_id = await getDynamicClientId(as);
-          // } else {
-          //   throw new Error('No way to get a client_id for this account')
-          // }
-          let client_id = d8c2_id;
+          let client_id
+          if (as.client_id_metadata_document_supported) {
+            client_id = cimd_id;
+          } else if (as.activitypub_object_id_as_client_id) {
+            client_id = d8c2_id;
+          } else if (as.registration_endpoint) {
+            client_id = await getDynamicClientId(as);
+          } else {
+            throw new Error('No way to get a client_id for this account')
+          }
           const client = { client_id }
           return client
       }
