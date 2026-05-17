@@ -1,0 +1,10 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/activitystreams",
+    "https://purl.archive.org/socialweb/oauth"
+  ],
+  "id": "https://swicg.github.io/activitypub-api/examples/oauth/d8c2.jsonld",
+  "type": "Application",
+  "name": "Example OAuth Client for ActivityPub API",
+  "redirectURI": "https://swicg.github.io/activitypub-api/examples/oauth/index.html"
+}
