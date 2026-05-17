@@ -21,9 +21,6 @@
     </p>
     <script type="module">
       import * as oauth from 'https://cdn.jsdelivr.net/npm/oauth4webapi@3/+esm';
-      import * as metadata from './cimd.json';
-
-      delete metadata.client_id;
 
       const redirectUri = window.location.origin + window.location.pathname;
       const cimd_id = (new URL('cimd.json', window.location.href)).toString();
@@ -115,6 +112,18 @@
       }
 
       async function getDynamicClientId(as) {
+
+        const metadata = {
+          "client_name": "Example OAuth Client for ActivityPub API",
+          "redirect_uris": [
+            redirectUri
+          ],
+          "token_endpoint_auth_method": "none",
+          "grant_types": ["authorization_code", "refresh_token"],
+          "response_types": ["code"],
+          "software_id": "1027348F-E698-45C4-8900-F1144E57807C",
+          "software_version": "0.1.0"
+        }
 
         const res = await oauth.dynamicClientRegistrationRequest(
           as,
