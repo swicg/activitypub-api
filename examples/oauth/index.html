@@ -89,6 +89,7 @@
         }
         const actor = await res.json()
         const as = {}
+        as.issuer = (new URL(actorId)).origin
         as.authorization_endpoint = actor.endpoints?.oauthAuthorizationEndpoint
         as.token_endpoint = actor.endpoints?.oauthTokenEndpoint
         if (actor.objectIDAsClientID) {
