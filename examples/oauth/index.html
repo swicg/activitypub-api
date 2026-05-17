@@ -20,11 +20,14 @@
       <span id="status"></span>
     </p>
     <script type="module">
-      // @ts-check
-      import * as oauth from 'https://cdn.jsdelivr.net/npm/oauth4webapi@3.8.2/build/index.min.js';
+      import * as oauth from 'https://cdn.jsdelivr.net/npm/oauth4webapi@3/+esm';
+      import * as metadata from './cimd.json';
+
+      delete metadata.client_id;
 
       const redirectUri = window.location.origin + window.location.pathname;
-      const clientId = (new URL('cimd.json', window.location.href)).toString();
+      const cimd_id = (new URL('cimd.json', window.location.href)).toString();
+      const d8c2_id = (new URL('d8c2.jsonld', window.location.href)).toString();
 
       const allowInsecureRequests = false; // useful for testing locally
 
@@ -67,13 +70,81 @@
           [oauth.allowInsecureRequests]: allowInsecureRequests,
         });
         if (!res.ok) {
-          throw new Error(`Bad status from discovery: ${res.status}`);
+         return null;
         }
         const as = await oauth.processDiscoveryResponse(
           new URL(asOrigin),
           res,
         );
         return as;
+      }
+
+      async function getAsFromActor(actorId) {
+        const res = await fetch(actorId)
+        if (!res.ok) {
+          return null;
+        }
+        const actor = await res.json()
+        const as = {}
+        as.authorization_endpoint = actor.endpoints?.oauthAuthorizationEndpoint
+        as.token_endpoint = actor.endpoints?.oauthTokenEndpoint
+        if (actor.objectIDAsClientID) {
+          as.activitypub_object_id_as_client_id = true
+        }
+        as.registration_endpoint = actor.endpoints?.oauthRegistrationEndpoint
+        return as
+      }
+
+      async function discoverAs(origin, actorId) {
+        let as = await getAsFromOrigin(origin);
+
+        if (!as) {
+          as = await getAsFromActor(actorId);
+        }
+
+        if (!as) {
+          throw new Error(`Cannot load AuthorizationServer for ${origin}`)
+        }
+
+        return as
+      }
+
+      async function getJSON(url) {
+        const res = await fetch(url)
+        return await res.json()
+      }
+
+      async function getDynamicClientId(as) {
+
+        const res = await oauth.dynamicClientRegistrationRequest(
+          as,
+          metadata,
+          { [oauth.allowInsecureRequests]: allowInsecureRequests }
+        )
+
+        if (!res.ok) {
+         return null;
+        }
+
+        const client = await oauth.processDynamicClientRegistrationResponse(res)
+
+        return client.client_id
+      }
+
+      async function discoverClient(as, origin) {
+          // let client_id
+          // if (as.client_id_metadata_document_supported) {
+          //   client_id = cimd_id;
+          // } else if (as.activitypub_object_id_as_client_id) {
+          //   client_id = d8c2_id;
+          // } else if (as.registration_endpoint) {
+          //   client_id = await getDynamicClientId(as);
+          // } else {
+          //   throw new Error('No way to get a client_id for this account')
+          // }
+          let client_id = await getDynamicClientId(as);
+          const client = { client_id }
+          return client
       }
 
       async function startLogin(as, client) {
@@ -195,31 +266,42 @@
         }
       }
 
+      function getStoredOrigin() {
+          return sessionStorage.getItem('as_origin')
+      }
+
+      function getStoredAs(origin) {
+          const json = localStorage.getItem(`as:${origin}`)
+          return JSON.parse(json)
+      }
+
+      function getStoredClient(origin) {
+          const json = localStorage.getItem(`client:${origin}`)
+          return JSON.parse(json)
+      }
+
       document.addEventListener("DOMContentLoaded", async () => {
         const loginEl = document.getElementById("login");
         const logoutEl = document.getElementById("logout");
         const refreshEl = document.getElementById("refresh");
         const webfingerEl = document.getElementById("webfinger");
 
-        const client = { client_id: clientId };
-        const asOrigin = sessionStorage.getItem('as_origin');
-        let as = null
-
-        if (asOrigin) {
-          as = await getAsFromOrigin(asOrigin)
-        }
         const params = new URLSearchParams(window.location.search);
+
         if (sessionStorage.getItem("access_token")) {
           loginEl?.setAttribute("disabled", "disabled");
           webfingerEl?.setAttribute("disabled", "disabled");
           logoutEl?.removeAttribute("disabled");
           refreshEl?.removeAttribute("disabled");
+          const as = getStoredAs(getStoredOrigin());
           await showUsername(as);
         } else if (params.get("state")) {
           loginEl?.setAttribute("disabled", "disabled");
           webfingerEl?.setAttribute("disabled", "disabled");
           logoutEl?.setAttribute("disabled", "disabled");
           refreshEl?.setAttribute("disabled", "disabled");
+          const as = getStoredAs(getStoredOrigin());
+          const client = getStoredClient(getStoredOrigin());
           await finishLogin(as, client);
         } else {
           loginEl?.removeAttribute("disabled");
@@ -231,8 +313,23 @@
           const webfinger = (webfingerEl) ? webfingerEl.value : null
           const actorId = await getActorIdFromWebfinger(webfinger)
           const origin = (new URL(actorId)).origin
-          as = await getAsFromOrigin(origin);
+
+          let as = await getStoredAs(origin);
+
+          if (!as) {
+            as = await discoverAs(origin, actorId)
+            localStorage.setItem(`as:${origin}`, JSON.stringify(as))
+          }
+
+          let client = getStoredClient(origin);
+
+          if (!client) {
+            client = await discoverClient(as, origin)
+            localStorage.setItem(`client:${origin}`, JSON.stringify(client))
+          }
+
           sessionStorage.setItem('as_origin', origin)
+
           await startLogin(as, client);
         });
         logoutEl?.addEventListener("click", async () => {
@@ -240,6 +337,8 @@
           window.location.href = redirectUri;
         });
         refreshEl?.addEventListener("click", async () => {
+          const as = getStoredAs(getStoredOrigin());
+          const client = getStoredClient(getStoredOrigin());
           await refreshAccessToken(as, client);
         });
       });
