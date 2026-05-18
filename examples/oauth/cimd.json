@@ -4,6 +4,7 @@
   "redirect_uris": [
     "https://swicg.github.io/activitypub-api/examples/oauth/index.html"
   ],
+  "scope": "read write",
   "token_endpoint_auth_method": "none",
   "grant_types": ["authorization_code", "refresh_token"],
   "response_types": ["code"],
