@@ -25,6 +25,7 @@
       const redirectUri = window.location.origin + window.location.pathname;
       const cimd_id = (new URL('cimd.json', window.location.href)).toString();
       const d8c2_id = (new URL('d8c2.jsonld', window.location.href)).toString();
+      const version = "0.1.1";
 
       const allowInsecureRequests = false; // useful for testing locally
 
@@ -39,7 +40,9 @@
         const [username, domain] = webfinger.split('@')
         const url = `https://${domain}/.well-known/webfinger?resource=acct:${webfinger}`
         const res = await fetch(url, {
-          headers: {Accept: 'application/xrd+json, application/json'}
+          headers: {
+            Accept: 'application/xrd+json, application/json'
+          }
         })
         if (!res.ok) {
           throw new Error(`Could not load webfinger info for ${webfinger}`)
@@ -126,7 +129,7 @@
           "grant_types": ["authorization_code", "refresh_token"],
           "response_types": ["code"],
           "software_id": "1027348F-E698-45C4-8900-F1144E57807C",
-          "software_version": "0.1.0"
+          "software_version": version
         }
 
         const res = await oauth.dynamicClientRegistrationRequest(
