@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset='utf-8'>
+  <title>Basic Profile for Social API Servers</title>
+
+  <script src='https://www.w3.org/Tools/respec/respec-w3c' async class='remove'></script>
+  <script class='remove'>
+    var respecConfig = {
+      specStatus: "unofficial",
+      github: {
+        branch: "main",
+        repoURL: "https://github.com/swicg/activitypub-api",
+      },
+      includePermalinks: false,
+      editors: [
+        {
+          name: "Evan Prodromou",
+          url: "https://socialwebfoundation.org/author/evanprodromou",
+          company: "Social Web Foundation",
+          companyURL: "https://socialwebfoundation.org/",
+          w3cid: 43626,
+        }
+      ],
+    };
+  </script>
+</head>
+
+<body>
+  <h1 id="title">Basic Profile for Social API
+    Servers</h1>
+  <section id='abstract'>
+    <h2>Abstract</h2>
+    <p>
+      ActivityPub defines a social API that is complementary and
+      interoperable with the ActivityPub federation protocol. This
+      document provides additional requirements for authorization and HTTP
+      access to achieve higher interoperability with client applications.
+    </p>
+  </section>
+  <section id='sotd'>
+    <p>This is an experimental specification and is undergoing regular
+      revisions.</p>
+  </section>
+  <section id='introduction'>
+    <h2>Introduction</h2>
+    <p>[[ActivityPub]] defines a read-write application programming interface (API) for social networking in its sections on Objects, Actors, Collections, and Client-to-Server Interactions, called the <strong>social API</strong>.</p>
+    <p>
+      This document provides an additional profile of the social API to improve interoperability with API clients. The profile adds responsibilities to the social API server, including support for authorization and HTTP request semantics.
+    </p>
+    <p>
+      This profile covers a number of different type of client deployment:
+      <ul>
+        <li>Single-page Web application</li>
+        <li>Native clients, mobile and desktop</li>
+        <li>Command-line clients</li>
+        <li>Open Source or proprietary clients</li>
+      </ul>
+    </p>
+    <p>
+      This profile covers a number of different client use cases:
+      <ul>
+        <li>
+          A stream-oriented social application for publishing content, making social connections, viewing and reacting to content from connected actors
+        </li>
+        <li>
+          A utility for making bulk updates to an actor's published content or to social connections
+        </li>
+        <li>
+          Integration with a video game to share progress, screenshots or achievements
+        </li>
+        <li>
+          Integration with an enterprise application to share files or comments
+        </li>
+        <li>
+          A search utility to find relevant content from the actor's connections
+        </li>
+      </ul>
+    </p>
+    <p>
+      In this model, applications act on behalf of, and with the informed consent of, a single actor.
+    </p>
+    <p>
+      Unless otherwise specified, in this document <em>server</em> means a Social API server.
+    </p>
+  </section>
+  <section id='activitypub'>
+    <h2>ActivityPub</h2>
+    <p>
+      This profile provides additional restrictions and requirements for the [[ActivityPub]] social API.
+    </p>
+    <section id='objects'>
+      <h3>Objects</h3>
+      <p>Servers SHOULD provide unique, dereferenceable https: URIs for
+        ActivityPub object IDs.</p>
+    </section>
+    <section id='collections'>
+      <h3>Collections</h3>
+      <p>Servers SHOULD provide an <code>inbox</code> collection that
+        accepts the <code>GET</code> HTTP method.</p>
+      <p>Servers SHOULD provide an <code>outbox</code> collection that
+        accepts the <code>POST</code> HTTP method.</p>
+    </section>
+    <section id='client-to-server'>
+      <h3>Client-to-Server Interactions</h3>
+      <p>Servers SHOULD allocate unique, dereferenceable https: URIs for
+        all activities created by client-to-server interactions.</p>
+      <p>Servers SHOULD implement the behaviour defined for all activity
+        types listed in the Client to Server Interactions section.</p>
+      <p>Servers SHOULD support the Create, Update and Delete activity
+        types for these common Web content object types: Article, Audio,
+        Image, Note, Video.</p>
+      <p>Servers SHOULD support the Create, Update and Delete activity
+        types for the Collection and OrderedCollection types.</p>
+      <p>Servers SHOULD support the Add and Remove activity types for
+        these common Web content object types: Article, Audio, Image, Note,
+        Video.</p>
+      <p>Servers SHOULD support the Add and Remove activity types for
+        actor objects.</p>
+      <p>Servers SHOULD support the Update activity type by the
+        authenticated user for their own actor object to change or add
+        properties of the actor.</p>
+      <p>Servers SHOULD store and distribute activities with other types
+        from the Activity Vocabulary or extension vocabularies. Servers MAY
+        implement side-effects of activities with these types.</p>
+    </section>
+  </section>
+  <section id='status'>
+    <h2>HTTP Status</h2>
+    <p>Social API servers SHOULD use [[rfc9457]] to indicate problems or successful HTTP status details.</p>
+    <p>Social API servers MAY use <a href="https://codeberg.org/fediverse/fep/src/branch/main/fep/c180/fep-c180.md">FEP-c180</a> to provide ActivityPub-specific problem details.</p>
+  </section>
+  <section id='oauth'>
+    <h2>OAuth 2.0</h2>
+    <p>[[rfc6749]] defines methods and protocols for granting access to
+      resources. In the OAuth 2.0 Authorization Framework, ActivityPub
+      social API servers act as a <em>resource server</em>. ActivityPub
+      social API servers MAY designate a separate server as an
+      <em>authorization server</em> or act as their own authorization
+      server.
+    </p>
+    <p>
+      Social API servers MUST support [[rfc6750]] to
+      control access to ActivityPub objects, actors, and collections by actors with an id on the server.
+    </p>
+    <section id='discovery'>
+      <h3>Discovery</h3>
+      <p>Social API servers MAY use [[rfc9728]] to designate
+        an authorization server. If such an external authorization server
+        is not designated, Social API servers SHOULD act as
+        their own authorization server.</p>
+      <p>Authorization servers SHOULD use [[rfc8414]] to provide
+        authorization server metadata. The metadata SHOULD include:</p>
+      <ul>
+        <li><code>authorization_endpoint</code></li>
+        <li><code>token_endpoint</code></li>
+        <li><code>scopes_supported</code></li>
+        <li><code>response_types_supported</code></li>
+        <li><code>grant_types_supported</code></li>
+        <li><code>code_challenge_methods_supported</code></li>
+        <li><code>token_endpoint_auth_methods_supported</code></li>
+        <li>One or more of: <code>client_id_metadata_document_supported</code>,
+          <code>activitypub_object_id_as_client_id</code>, or <code>registration_endpoint</code></li>
+      </ul>
+      <p>Authorization servers MAY use ActivityPub actor endpoints to
+        declare the <code>oauthAuthorizationEndpoint</code>, <code>oauthTokenEndpoint</code>, and
+        <code>oauthRegistrationEndpoint</code>.</p>
+    </section>
+    <section id='flow'>
+      <h3>Flows</h3>
+      <p>Authorization servers MUST support the <a
+          href="https://datatracker.ietf.org/doc/html/rfc6749#section-4.1">authorization
+          code grant</a>.</p>
+      <p>Authorization servers SHOULD support the <a
+          href="https://datatracker.ietf.org/doc/html/rfc6749#section-6">refresh
+          token grant</a>.</p>
+    </section>
+    <section id='client-id'>
+      <h3>Client IDs</h3>
+      <p>Authorization servers SHOULD support <a
+          href="https://datatracker.ietf.org/doc/draft-ietf-oauth-client-id-metadata-document/">
+          Client ID Metadata Document</a> (CIMD) URLs as client ID.
+        Authorization servers SHOULD declare support for CIMD in the
+        authorization server metadata.</p>
+      <p>Authorization servers MAY support <a
+          href="https://codeberg.org/fediverse/fep/src/branch/main/fep/d8c2/fep-d8c2.md">
+          FEP-d8c2</a> URLs as client IDs. Authorization servers SHOULD
+        declare support for FEP-d8c2 in the authorization server metadata
+        and in the actor object.</p>
+      <p>Authorization servers MAY support [[rfc7591]] for dynamic client
+        registration (DCR). Authorization servers that support DCR SHOULD
+        declare the registration endpoint in the authorization server
+        metadata and in the actor object.</p>
+    </section>
+    <section id='scopes'>
+      <h3>Scopes</h3>
+      <p>Authorization servers MAY support the following scope
+        identifiers.</p>
+      <ul>
+        <li><code>activitypub:read:all</code> - read any data on this or
+          other servers</li>
+        <li><code>activitypub:read:local:all</code> - read any data on this
+          server</li>
+        <li><code>activitypub:read:remote:all</code> - read any data on
+          remote server (using proxyUrl)</li>
+        <li><code>activitypub:read:me:all</code> - read any local or remote
+          data on this or other servers with the user as owner (actor,
+          attributedTo)</li>
+        <li><code>activitypub:read:me:actor</code> - read actor
+          profile</li>
+        <li><code>activitypub:read:me:inbox</code> - Client can read the
+          user inbox, any activity in the inbox, and any properties of those
+          activities</li>
+        <li><code>activitypub:read:me:outbox</code> - Client can read the
+          user outbox, any activity in the outbox, and any properties of
+          those activities</li>
+        <li><code>activitypub:read:me:following</code> - Client can read
+          the user following, any actor in the following, and any properties
+          of those actors</li>
+        <li><code>activitypub:read:me:followers</code> - Client can read
+          the user followers, any actor in the followers, and any properties
+          of those actors</li>
+        <li><code>activitypub:read:me:liked</code> - Client can read the
+          user liked, any object in the liked, and any properties of those
+          objects</li>
+        <li><code>activitypub:write:all</code> - generate any activity by
+          posting to the user outbox</li>
+        <li><code>activitypub:write:create</code> - generate a Create
+          activity</li>
+        <li><code>activitypub:write:update</code> - generate an Update
+          activity</li>
+        <li><code>activitypub:write:delete</code> - generate a Delete
+          activity</li>
+        <li><code>activitypub:write:follow</code> - generate a Follow
+          activity</li>
+        <li><code>activitypub:write:accept</code> - generate an Accept
+          activity</li>
+        <li><code>activitypub:write:reject</code> - generate a Reject
+          activity</li>
+        <li><code>activitypub:write:add</code> - generate an Add
+          activity</li>
+        <li><code>activitypub:write:remove</code> - generate a Remove
+          activity</li>
+        <li><code>activitypub:write:like</code> - generate a Like
+          activity</li>
+        <li><code>activitypub:write:block</code> - generate a Block
+          activity</li>
+        <li><code>activitypub:write:question</code> - generate a Question
+          activity</li>
+        <li><code>activitypub:write:flag</code> - generate a Flag
+          activity</li>
+        <li><code>activitypub:write:announce</code> - generate an Announce
+          activity</li>
+        <li><code>activitypub:write:undo:all</code> - generate any Undo
+          activity</li>
+        <li><code>activitypub:write:undo:like</code> - generate an Undo
+          activity with a Like activity as the object</li>
+        <li><code>activitypub:write:undo:follow</code> - generate an Undo
+          activity with a Follow activity as the object</li>
+        <li><code>activitypub:write:undo:block</code> - generate an Undo
+          activity with a Block activity as the object</li>
+        <li><code>activitypub:write:undo:announce</code> - generate an Undo
+          activity with an Announce activity as the object</li>
+        <li><code>activitypub:write:all:sameorigin</code> - generate any
+          activity with the object, target, or origin property in the same
+          origin as the client ID</li>
+        <li><code>activitypub:write:create:sameorigin</code> - generate a
+          Create activity with the object in the same origin as the client
+          ID</li>
+        <li><code>activitypub:write:update:sameorigin</code> - generate an
+          Update activity with the object in the same origin as the client
+          ID</li>
+        <li><code>activitypub:write:delete:sameorigin</code> - generate a
+          Delete activity with the object in the same origin as the client
+          ID</li>
+        <li><code>activitypub:write:follow:sameorigin</code> - generate a
+          Follow activity with the object in the same origin as the client
+          ID</li>
+        <li><code>activitypub:write:add:sameorigin</code> - generate an Add
+          activity with the object or target in the same origin as the client
+          ID</li>
+        <li><code>activitypub:write:remove:sameorigin</code> - generate a
+          Remove activity with the object or target in the same origin as the
+          client ID</li>
+        <li><code>activitypub:write:like:sameorigin</code> - generate a
+          Like activity with the object in the same origin as the client
+          ID</li>
+        <li><code>activitypub:write:block:sameorigin</code> - generate a
+          Block activity with the object in the same origin as the client
+          ID</li>
+        <li><code>activitypub:write:announce:sameorigin</code> - generate
+          an Announce activity with the object in the same origin as the
+          client ID</li>
+        <li><code>activitypub:write:flag:sameorigin</code> - generate a
+          Flag activity with the object in the same origin as the client
+          ID</li>
+        <li><code>activitypub:write:undo:all:sameorigin</code> - generate
+          an Undo activity with an object as an activity of any type with the
+          object, target or origin in the same origin as the client ID</li>
+        <li><code>activitypub:write:undo:like:sameorigin</code> - generate
+          an Undo activity with a Like activity as the object with the object
+          property in the same origin as the client ID</li>
+        <li><code>activitypub:write:undo:follow:sameorigin</code> -
+          generate an Undo activity with a Follow activity as the object with
+          the object property in the same origin as the client ID</li>
+        <li><code>activitypub:write:undo:block:sameorigin</code> - generate
+          an Undo activity with a Block activity as the object with the
+          object property in the same origin as the client ID</li>
+        <li><code>activitypub:write:undo:announce:sameorigin</code> -
+          generate Undo activity with an Announce activity as the object with
+          the object in the same origin as the client ID</li>
+        <li><code>activitypub:write:create:inreplyto:sameorigin</code> -
+          generate a Create activity with the object inReplyTo an object in
+          the same origin as the client ID</li>
+        <li><code>activitypub:write:update:inreplyto:sameorigin</code> -
+          generate a Delete activity with the object inReplyTo an object in
+          the same origin as the client ID</li>
+        <li><code>activitypub:write:delete:inreplyto:sameorigin</code> -
+          generate a Delete activity with the object inReplyTo an object in
+          the same origin as the client ID</li>
+        <li><code>read</code> - a synonym for
+          <code>activitypub:read:all</code>
+        </li>
+        <li><code>write</code> - a synonym for
+          <code>activitypub:write:all</code>
+        </li>
+        <li><code>write:sameorigin</code> - a synonym for
+          <code>activitypub:write:all:sameorigin</code>
+        </li>
+      </ul>
+    </section>
+    <section id='pkce'>
+      <h3>PKCE</h3>
+      <p>Authorization servers SHOULD support [[rfc7636]] (PKCE) for
+        public clients. Authorization servers that support PKCE SHOULD
+        support the <code>S256</code> challenge method, and SHOULD declare
+        support for the S256 challenge method in the authorization server
+        metadata.</p>
+    </section>
+    <section id='identity'>
+      <h3>Authorized actor identity</h3>
+      <p>The authorization server MUST provide the ActivityPub actor id
+        of the authenticated user to the client.</p>
+      <p>The authorization server SHOULD include an
+        <code>activitypub_actor_id</code> property in the token endpoint
+        results. This is the https: URL for the ActivityPub actor ID.
+      </p>
+      <p>The authorization server MAY use [[rfc7519]] for the
+        <code>access_token</code>. If so, it MUST use the ActivityPub actor
+        ID as the <code>sub</code> claim.
+      </p>
+      <p>The authorization server MAY support <a href="https://openid.net/specs/openid-connect-core-1_0.html">OpenID
+          Connect</a>. If so, it MUST use the ActivityPub actor ID as the
+        <code>sub</code> claim in the UserInfo endpoint.
+      </p>
+    </section>
+  </section>
+  <section id='rate-limiting'>
+    <h2>Rate Limiting</h2>
+    <p>
+      Social API servers MAY limit API requests by any conditions necessary. Servers MAY have different rate limiting policies for different types of requests, including but not limited to different HTTP methods, different types of ActivityPub object, different ActivityPub collections, network conditions, time of day, calendar date, different API clients, or different users.
+    </p>
+    <p>
+      Social API servers SHOULD support rate limits appropriate for interactive use of the server under typical social network workloads. Social API servers SHOULD support different rate limits for sustained rate (average number of requests over minutes or hours) and burst rate (a high number of requests in a few seconds, as when loading or scrolling an inbox or followers collection).
+    </p>
+    <p>
+      Social API servers MUST use the <a href="https://datatracker.ietf.org/doc/html/rfc6585#section-4">429 Too Many Requests</a> HTTP status code to indicate that the client has reached its rate limit. Servers SHOULD include the <a href="https://datatracker.ietf.org/doc/html/rfc9110#section-10.2.3">Retry-After</a> header in the HTTP response to indicate how long the client should wait.
+    </p>
+    <p>
+      Social API servers SHOULD use the <a href="https://www.ietf.org/archive/id/draft-ietf-httpapi-ratelimit-headers-10.html">RateLimit header fields for HTTP</a> to indicate rate limit policies, remaining request quotas, and quota reset times.
+    </p>
+  </section>
+  <section id='cors'>
+    <h2>Cross-origin Resource Sharing (CORS)</h2>
+    <p>Social API servers SHOULD support [[CORS]], including CORS pre-flight requests.</p>
+    <p>Social API servers SHOULD allow access to all origins ('*') with the <a href="https://fetch.spec.whatwg.org/#http-access-control-allow-origin">Access-Control-Allow-Origin</a> header.</p>
+  </section>
+  <section id='media-upload'>
+    <h2>Media Upload</h2>
+    <p>Social API servers SHOULD support the <a href="https://www.w3.org/wiki/SocialCG/ActivityPub/MediaUpload">MediaUpload</a> endpoint. Servers SHOULD accept, store, and distribute common Web binary file formats, including images, audio, and video.</p>
+  </section>
+  <section id='remote-object-access'>
+    <h2>Remote object access</h2>
+    <p>Social API servers SHOULD provide a <a href="https://www.w3.org/TR/activitypub/#proxyUrl">proxyUrl</a> endpoint.</p>
+  </section>
+  <section id='caching'>
+    <h2>Caching</h2>
+    <p>Social API servers SHOULD support [[rfc9111]] for HTTP caching.</p>
+  </section>
+  <section id='conformance'>
+    <!-- This section is filled automatically by ReSpec. -->
+  </section>
+</body>
+
+</html>
