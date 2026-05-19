@@ -100,43 +100,43 @@
     </p>
     <section id='objects'>
       <h3>Objects</h3>
-      <p>Servers SHOULD provide unique, dereferenceable https: URIs for
+      <p>Social API servers SHOULD provide unique, dereferenceable https: URIs for
         ActivityPub object IDs.</p>
     </section>
     <section id='collections'>
       <h3>Collections</h3>
-      <p>Servers SHOULD provide an <code>inbox</code> collection that
-        accepts the <code>GET</code> HTTP method. Servers SHOULD allow actors to read their own <code>inbox</code> collection.</p>
-      <p>Servers SHOULD provide an <code>outbox</code> collection that
+      <p>Social API servers SHOULD provide an <code>inbox</code> collection that
+        accepts the <code>GET</code> HTTP method. Social API servers SHOULD allow actors to read their own <code>inbox</code> collection.</p>
+      <p>Social API servers SHOULD provide an <code>outbox</code> collection that
         accepts the <code>POST</code> HTTP method.</p>
     </section>
     <section id='client-to-server'>
       <h3>Client-to-Server Interactions</h3>
-      <p>Servers SHOULD allocate unique, dereferenceable https: URIs for
+      <p>Social API servers SHOULD allocate unique, dereferenceable https: URIs for
         all activities created by client-to-server interactions.</p>
-      <p>Servers SHOULD implement the behaviour defined for all activity
+      <p>Social API servers SHOULD implement the behaviour defined for all activity
         types listed in the Client to Server Interactions section.</p>
-      <p>Servers SHOULD support the Create, Update and Delete activity
+      <p>Social API servers SHOULD support the Create, Update and Delete activity
         types for these common Web content object types: Article, Audio,
         Image, Note, Video.</p>
-      <p>Servers SHOULD support the Create, Update and Delete activity
+      <p>Social API servers SHOULD support the Create, Update and Delete activity
         types for the Collection and OrderedCollection types.</p>
-      <p>Servers SHOULD support the Add and Remove activity types for
+      <p>Social API servers SHOULD support the Add and Remove activity types for
         these common Web content object types: Article, Audio, Image, Note,
         Video.</p>
-      <p>Servers SHOULD support the Add and Remove activity types for
+      <p>Social API servers SHOULD support the Add and Remove activity types for
         actor objects.</p>
-      <p>Servers SHOULD support the Update activity type by the
+      <p>Social API servers SHOULD support the Update activity type by the
         authenticated user for their own actor object to change or add
         properties of the actor.</p>
-      <p>Servers SHOULD store and distribute activities with other types
+      <p>Social API servers SHOULD store and distribute activities with other types
         from the Activity Vocabulary or extension vocabularies. Servers MAY
         implement side-effects of activities with these types.</p>
     </section>
     <section id='media-upload'>
       <h3>Media Upload</h3>
       <p>Social API servers SHOULD support the <a
-          href="https://www.w3.org/wiki/SocialCG/ActivityPub/MediaUpload">MediaUpload</a> endpoint. Servers SHOULD
+          href="https://www.w3.org/wiki/SocialCG/ActivityPub/MediaUpload">MediaUpload</a> endpoint. Social API servers SHOULD
         accept, store, and distribute common Web binary file formats, including images, audio, and video.</p>
     </section>
     <section id='remote-object-access'>
@@ -164,7 +164,7 @@
         an authorization server. If such an external authorization server
         is not designated, Social API servers SHOULD act as
         their own authorization server.</p>
-      <p>Authorization servers SHOULD use [[rfc8414]] to provide
+      <p>Authorization Social API servers SHOULD use [[rfc8414]] to provide
         authorization server metadata. The metadata SHOULD include:</p>
       <ul>
         <li><code>authorization_endpoint</code></li>
@@ -188,20 +188,20 @@
       <p>Authorization servers MUST support the <a
           href="https://datatracker.ietf.org/doc/html/rfc6749#section-4.1">authorization
           code grant</a>.</p>
-      <p>Authorization servers SHOULD support the <a
+      <p>Authorization Social API servers SHOULD support the <a
           href="https://datatracker.ietf.org/doc/html/rfc6749#section-6">refresh
           token grant</a>.</p>
     </section>
     <section id='client-id'>
       <h3>Client IDs</h3>
-      <p>Authorization servers SHOULD support <a
+      <p>Authorization Social API servers SHOULD support <a
           href="https://datatracker.ietf.org/doc/draft-ietf-oauth-client-id-metadata-document/">
           Client ID Metadata Document</a> (CIMD) URLs as client ID.
-        Authorization servers SHOULD declare support for CIMD in the
+        Authorization Social API servers SHOULD declare support for CIMD in the
         authorization server metadata.</p>
       <p>Authorization servers MAY support <a
           href="https://codeberg.org/fediverse/fep/src/branch/main/fep/d8c2/fep-d8c2.md">
-          FEP-d8c2</a> URLs as client IDs. Authorization servers SHOULD
+          FEP-d8c2</a> URLs as client IDs. Authorization Social API servers SHOULD
         declare support for FEP-d8c2 in the authorization server metadata
         and in the actor object.</p>
       <p>Authorization servers MAY support [[rfc7591]] for dynamic client
@@ -348,7 +348,7 @@
     </section>
     <section id='pkce'>
       <h3>PKCE</h3>
-      <p>Authorization servers SHOULD support [[rfc7636]] (PKCE) for
+      <p>Authorization Social API servers SHOULD support [[rfc7636]] (PKCE) for
         public clients. Authorization servers that support PKCE SHOULD
         support the <code>S256</code> challenge method, and SHOULD declare
         support for the S256 challenge method in the authorization server
@@ -409,7 +409,7 @@
       </p>
       <p>
         Social API servers MUST use the <a href="https://datatracker.ietf.org/doc/html/rfc6585#section-4">429 Too Many
-          Requests</a> HTTP status code to indicate that the client has reached its rate limit. Servers SHOULD include
+          Requests</a> HTTP status code to indicate that the client has reached its rate limit. Social API servers SHOULD include
         the <a href="https://datatracker.ietf.org/doc/html/rfc9110#section-10.2.3">Retry-After</a> header in the HTTP
         response to indicate how long the client should wait.
       </p>
