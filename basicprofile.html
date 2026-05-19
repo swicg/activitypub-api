@@ -45,38 +45,43 @@
   </section>
   <section id='introduction'>
     <h2>Introduction</h2>
-    <p>[[ActivityPub]] defines a read-write application programming interface (API) for social networking in its sections on Objects, Actors, Collections, and Client-to-Server Interactions, called the <strong>social API</strong>.</p>
+    <p>[[ActivityPub]] defines a read-write application programming interface (API) for social networking in its
+      sections on Objects, Actors, Collections, and Client-to-Server Interactions, called the <strong>social
+        API</strong>.</p>
     <p>
-      This document provides an additional profile of the social API to improve interoperability with API clients. The profile adds responsibilities to the social API server, including support for authorization and HTTP request semantics.
+      This document provides an additional profile of the social API to improve interoperability with API clients. The
+      profile adds responsibilities to the social API server, including support for authorization and HTTP request
+      semantics.
     </p>
     <p>
       This profile covers a number of different type of client deployment:
-      <ul>
-        <li>Single-page Web application</li>
-        <li>Native clients, mobile and desktop</li>
-        <li>Command-line clients</li>
-        <li>Open Source or proprietary clients</li>
-      </ul>
+    <ul>
+      <li>Single-page Web application</li>
+      <li>Native clients, mobile and desktop</li>
+      <li>Command-line clients</li>
+      <li>Open Source or proprietary clients</li>
+    </ul>
     </p>
     <p>
       This profile covers a number of different client use cases:
-      <ul>
-        <li>
-          A stream-oriented social application for publishing content, making social connections, viewing and reacting to content from connected actors
-        </li>
-        <li>
-          A utility for making bulk updates to an actor's published content or to social connections
-        </li>
-        <li>
-          Integration with a video game to share progress, screenshots or achievements
-        </li>
-        <li>
-          Integration with an enterprise application to share files or comments
-        </li>
-        <li>
-          A search utility to find relevant content from the actor's connections
-        </li>
-      </ul>
+    <ul>
+      <li>
+        A stream-oriented social application for publishing content, making social connections, viewing and reacting to
+        content from connected actors
+      </li>
+      <li>
+        A utility for making bulk updates to an actor's published content or to social connections
+      </li>
+      <li>
+        Integration with a video game to share progress, screenshots or achievements
+      </li>
+      <li>
+        Integration with an enterprise application to share files or comments
+      </li>
+      <li>
+        A search utility to find relevant content from the actor's connections
+      </li>
+    </ul>
     </p>
     <p>
       In this model, applications act on behalf of, and with the informed consent of, a single actor.
@@ -125,11 +130,17 @@
         from the Activity Vocabulary or extension vocabularies. Servers MAY
         implement side-effects of activities with these types.</p>
     </section>
-  </section>
-  <section id='status'>
-    <h2>HTTP Status</h2>
-    <p>Social API servers SHOULD use [[rfc9457]] to indicate problems or successful HTTP status details.</p>
-    <p>Social API servers MAY use <a href="https://codeberg.org/fediverse/fep/src/branch/main/fep/c180/fep-c180.md">FEP-c180</a> to provide ActivityPub-specific problem details.</p>
+    <section id='media-upload'>
+      <h3>Media Upload</h3>
+      <p>Social API servers SHOULD support the <a
+          href="https://www.w3.org/wiki/SocialCG/ActivityPub/MediaUpload">MediaUpload</a> endpoint. Servers SHOULD
+        accept, store, and distribute common Web binary file formats, including images, audio, and video.</p>
+    </section>
+    <section id='remote-object-access'>
+      <h3>Remote object access</h3>
+      <p>Social API servers SHOULD provide a <a href="https://www.w3.org/TR/activitypub/#proxyUrl">proxyUrl</a>
+        endpoint.</p>
+    </section>
   </section>
   <section id='oauth'>
     <h2>OAuth 2.0</h2>
@@ -161,11 +172,13 @@
         <li><code>code_challenge_methods_supported</code></li>
         <li><code>token_endpoint_auth_methods_supported</code></li>
         <li>One or more of: <code>client_id_metadata_document_supported</code>,
-          <code>activitypub_object_id_as_client_id</code>, or <code>registration_endpoint</code></li>
+          <code>activitypub_object_id_as_client_id</code>, or <code>registration_endpoint</code>
+        </li>
       </ul>
       <p>Authorization servers MAY use ActivityPub actor endpoints to
         declare the <code>oauthAuthorizationEndpoint</code>, <code>oauthTokenEndpoint</code>, and
-        <code>oauthRegistrationEndpoint</code>.</p>
+        <code>oauthRegistrationEndpoint</code>.
+      </p>
     </section>
     <section id='flow'>
       <h3>Flows</h3>
@@ -356,37 +369,53 @@
       </p>
     </section>
   </section>
-  <section id='rate-limiting'>
-    <h2>Rate Limiting</h2>
-    <p>
-      Social API servers MAY limit API requests by any conditions necessary. Servers MAY have different rate limiting policies for different types of requests, including but not limited to different HTTP methods, different types of ActivityPub object, different ActivityPub collections, network conditions, time of day, calendar date, different API clients, or different users.
-    </p>
-    <p>
-      Social API servers SHOULD support rate limits appropriate for interactive use of the server under typical social network workloads. Social API servers SHOULD support different rate limits for sustained rate (average number of requests over minutes or hours) and burst rate (a high number of requests in a few seconds, as when loading or scrolling an inbox or followers collection).
-    </p>
-    <p>
-      Social API servers MUST use the <a href="https://datatracker.ietf.org/doc/html/rfc6585#section-4">429 Too Many Requests</a> HTTP status code to indicate that the client has reached its rate limit. Servers SHOULD include the <a href="https://datatracker.ietf.org/doc/html/rfc9110#section-10.2.3">Retry-After</a> header in the HTTP response to indicate how long the client should wait.
-    </p>
-    <p>
-      Social API servers SHOULD use the <a href="https://www.ietf.org/archive/id/draft-ietf-httpapi-ratelimit-headers-10.html">RateLimit header fields for HTTP</a> to indicate rate limit policies, remaining request quotas, and quota reset times.
-    </p>
-  </section>
-  <section id='cors'>
-    <h2>Cross-origin Resource Sharing (CORS)</h2>
-    <p>Social API servers SHOULD support [[CORS]], including CORS pre-flight requests.</p>
-    <p>Social API servers SHOULD allow access to all origins ('*') with the <a href="https://fetch.spec.whatwg.org/#http-access-control-allow-origin">Access-Control-Allow-Origin</a> header.</p>
-  </section>
-  <section id='media-upload'>
-    <h2>Media Upload</h2>
-    <p>Social API servers SHOULD support the <a href="https://www.w3.org/wiki/SocialCG/ActivityPub/MediaUpload">MediaUpload</a> endpoint. Servers SHOULD accept, store, and distribute common Web binary file formats, including images, audio, and video.</p>
-  </section>
-  <section id='remote-object-access'>
-    <h2>Remote object access</h2>
-    <p>Social API servers SHOULD provide a <a href="https://www.w3.org/TR/activitypub/#proxyUrl">proxyUrl</a> endpoint.</p>
-  </section>
-  <section id='caching'>
-    <h2>Caching</h2>
-    <p>Social API servers SHOULD support [[rfc9111]] for HTTP caching.</p>
+  <section id="http">
+    <h2>HTTP</h2>
+    <p>This profile adds requirements and restrictions to the HTTP interactions of the social API server.</p>
+    <section id='status'>
+      <h3>HTTP Status</h3>
+      <p>Social API servers SHOULD use [[rfc9457]] to indicate problems or successful HTTP status details.</p>
+      <p>Social API servers MAY use <a
+          href="https://codeberg.org/fediverse/fep/src/branch/main/fep/c180/fep-c180.md">FEP-c180</a> to provide
+        ActivityPub-specific problem details.</p>
+    </section>
+    <section id='cors'>
+      <h3>Cross-origin Resource Sharing (CORS)</h3>
+      <p>Social API servers SHOULD support [[CORS]], including CORS pre-flight requests.</p>
+      <p>Social API servers SHOULD allow access to all origins ('*') with the <a
+          href="https://fetch.spec.whatwg.org/#http-access-control-allow-origin">Access-Control-Allow-Origin</a> header.
+      </p>
+    </section>
+    <section id='caching'>
+      <h3>Caching</h3>
+      <p>Social API servers SHOULD support [[rfc9111]] for HTTP caching.</p>
+    </section>
+    <section id='rate-limiting'>
+      <h3>Rate Limiting</h3>
+      <p>
+        Social API servers MAY limit API requests by any conditions necessary. Servers MAY have different rate limiting
+        policies for different types of requests, including but not limited to different HTTP methods, different types
+        of ActivityPub object, different ActivityPub collections, network conditions, time of day, calendar date,
+        different API clients, or different users.
+      </p>
+      <p>
+        Social API servers SHOULD support rate limits appropriate for interactive use of the server under typical social
+        network workloads. Social API servers SHOULD support different rate limits for sustained rate (average number of
+        requests over minutes or hours) and burst rate (a high number of requests in a few seconds, as when loading or
+        scrolling an inbox or followers collection).
+      </p>
+      <p>
+        Social API servers MUST use the <a href="https://datatracker.ietf.org/doc/html/rfc6585#section-4">429 Too Many
+          Requests</a> HTTP status code to indicate that the client has reached its rate limit. Servers SHOULD include
+        the <a href="https://datatracker.ietf.org/doc/html/rfc9110#section-10.2.3">Retry-After</a> header in the HTTP
+        response to indicate how long the client should wait.
+      </p>
+      <p>
+        Social API servers SHOULD use the <a
+          href="https://www.ietf.org/archive/id/draft-ietf-httpapi-ratelimit-headers-10.html">RateLimit header fields
+          for HTTP</a> to indicate rate limit policies, remaining request quotas, and quota reset times.
+      </p>
+    </section>
   </section>
   <section id='conformance'>
     <!-- This section is filled automatically by ReSpec. -->
