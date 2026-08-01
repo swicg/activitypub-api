@@ -8,7 +8,7 @@
 
 - [Issue tracker](https://github.com/swicg/activitypub-api/issues)
 - [Mailing list](https://lists.w3.org/Archives/Public/public-swicg/)
-- [Federated discussions: api@activitypub.space](https://activitypub.space/category/31/activitypub-api-take-force)
+- [Federated discussions: api@activitypub.space](https://activitypub.space/category/31/activitypub-api-task-force)
 
 ## Introduction
 
