@@ -213,138 +213,153 @@
       <h3>Scopes</h3>
       <p>Authorization servers MAY support the following scope
         identifiers.</p>
-      <ul>
-        <li><code>activitypub:read:all</code> - read any data on this or
-          other servers</li>
-        <li><code>activitypub:read:local:all</code> - read any data on this
-          server</li>
-        <li><code>activitypub:read:remote:all</code> - read any data on
-          remote server (using proxyUrl)</li>
-        <li><code>activitypub:read:me:all</code> - read any local or remote
-          data on this or other servers with the user as owner (actor,
-          attributedTo)</li>
-        <li><code>activitypub:read:me:actor</code> - read actor
-          profile</li>
-        <li><code>activitypub:read:me:inbox</code> - Client can read the
-          user inbox, any activity in the inbox, and any properties of those
-          activities</li>
-        <li><code>activitypub:read:me:outbox</code> - Client can read the
-          user outbox, any activity in the outbox, and any properties of
-          those activities</li>
-        <li><code>activitypub:read:me:following</code> - Client can read
-          the user following, any actor in the following, and any properties
-          of those actors</li>
-        <li><code>activitypub:read:me:followers</code> - Client can read
-          the user followers, any actor in the followers, and any properties
-          of those actors</li>
-        <li><code>activitypub:read:me:liked</code> - Client can read the
-          user liked, any object in the liked, and any properties of those
-          objects</li>
-        <li><code>activitypub:write:all</code> - generate any activity by
-          posting to the user outbox</li>
-        <li><code>activitypub:write:create</code> - generate a Create
-          activity</li>
-        <li><code>activitypub:write:update</code> - generate an Update
-          activity</li>
-        <li><code>activitypub:write:delete</code> - generate a Delete
-          activity</li>
-        <li><code>activitypub:write:follow</code> - generate a Follow
-          activity</li>
-        <li><code>activitypub:write:accept</code> - generate an Accept
-          activity</li>
-        <li><code>activitypub:write:reject</code> - generate a Reject
-          activity</li>
-        <li><code>activitypub:write:add</code> - generate an Add
-          activity</li>
-        <li><code>activitypub:write:remove</code> - generate a Remove
-          activity</li>
-        <li><code>activitypub:write:like</code> - generate a Like
-          activity</li>
-        <li><code>activitypub:write:block</code> - generate a Block
-          activity</li>
-        <li><code>activitypub:write:question</code> - generate a Question
-          activity</li>
-        <li><code>activitypub:write:flag</code> - generate a Flag
-          activity</li>
-        <li><code>activitypub:write:announce</code> - generate an Announce
-          activity</li>
-        <li><code>activitypub:write:undo:all</code> - generate any Undo
-          activity</li>
-        <li><code>activitypub:write:undo:like</code> - generate an Undo
-          activity with a Like activity as the object</li>
-        <li><code>activitypub:write:undo:follow</code> - generate an Undo
-          activity with a Follow activity as the object</li>
-        <li><code>activitypub:write:undo:block</code> - generate an Undo
-          activity with a Block activity as the object</li>
-        <li><code>activitypub:write:undo:announce</code> - generate an Undo
-          activity with an Announce activity as the object</li>
-        <li><code>activitypub:write:all:sameorigin</code> - generate any
-          activity with the object, target, or origin property in the same
-          origin as the client ID</li>
-        <li><code>activitypub:write:create:sameorigin</code> - generate a
-          Create activity with the object in the same origin as the client
-          ID</li>
-        <li><code>activitypub:write:update:sameorigin</code> - generate an
-          Update activity with the object in the same origin as the client
-          ID</li>
-        <li><code>activitypub:write:delete:sameorigin</code> - generate a
-          Delete activity with the object in the same origin as the client
-          ID</li>
-        <li><code>activitypub:write:follow:sameorigin</code> - generate a
-          Follow activity with the object in the same origin as the client
-          ID</li>
-        <li><code>activitypub:write:add:sameorigin</code> - generate an Add
-          activity with the object or target in the same origin as the client
-          ID</li>
-        <li><code>activitypub:write:remove:sameorigin</code> - generate a
-          Remove activity with the object or target in the same origin as the
-          client ID</li>
-        <li><code>activitypub:write:like:sameorigin</code> - generate a
-          Like activity with the object in the same origin as the client
-          ID</li>
-        <li><code>activitypub:write:block:sameorigin</code> - generate a
-          Block activity with the object in the same origin as the client
-          ID</li>
-        <li><code>activitypub:write:announce:sameorigin</code> - generate
-          an Announce activity with the object in the same origin as the
-          client ID</li>
-        <li><code>activitypub:write:flag:sameorigin</code> - generate a
-          Flag activity with the object in the same origin as the client
-          ID</li>
-        <li><code>activitypub:write:undo:all:sameorigin</code> - generate
-          an Undo activity with an object as an activity of any type with the
-          object, target or origin in the same origin as the client ID</li>
-        <li><code>activitypub:write:undo:like:sameorigin</code> - generate
-          an Undo activity with a Like activity as the object with the object
-          property in the same origin as the client ID</li>
-        <li><code>activitypub:write:undo:follow:sameorigin</code> -
-          generate an Undo activity with a Follow activity as the object with
-          the object property in the same origin as the client ID</li>
-        <li><code>activitypub:write:undo:block:sameorigin</code> - generate
-          an Undo activity with a Block activity as the object with the
-          object property in the same origin as the client ID</li>
-        <li><code>activitypub:write:undo:announce:sameorigin</code> -
-          generate Undo activity with an Announce activity as the object with
-          the object in the same origin as the client ID</li>
-        <li><code>activitypub:write:create:inreplyto:sameorigin</code> -
-          generate a Create activity with the object inReplyTo an object in
-          the same origin as the client ID</li>
-        <li><code>activitypub:write:update:inreplyto:sameorigin</code> -
-          generate a Delete activity with the object inReplyTo an object in
-          the same origin as the client ID</li>
-        <li><code>activitypub:write:delete:inreplyto:sameorigin</code> -
-          generate a Delete activity with the object inReplyTo an object in
-          the same origin as the client ID</li>
-        <li><code>read</code> - a synonym for
-          <code>activitypub:read:all</code>
-        </li>
-        <li><code>write</code> - a synonym for
-          <code>activitypub:write:all</code>
-        </li>
-        <li><code>write:sameorigin</code> - a synonym for
-          <code>activitypub:write:all:sameorigin</code>
-        </li>
-      </ul>
+      <table>
+        <tr>
+          <th>Scope identifier</th>
+          <th>Title</th>
+          <th>Meaning</th>
+        </tr>
+        <tr>
+          <td>https://swicg.github.io/activitypub-api/scopes#readall</td>
+          <td>Read all your data</td>
+          <td>Read any data for the user, including their profile, standard collections, content.</td>
+        </tr>
+        <tr>
+          <td>https://swicg.github.io/activitypub-api/scopes#readany</td>
+          <td>Read data on any server</td>
+          <td>Read data on the user's home server, however that is defined, and use <code>proxyUrl</code> to access data on other servers with the user's authorization.</td>
+        </tr>
+        <tr>
+          <td>https://swicg.github.io/activitypub-api/scopes#readown</td>
+          <td>Read data on its own server</td>
+          <td>Read data on the client's own server, with the same domain as the the client's CIMD identity.</td>
+        </tr>
+        <tr>
+          <td>https://swicg.github.io/activitypub-api/scopes#readlocal</td>
+          <td>Read data on your server</td>
+          <td>Read data on the user's home server, however that is defined.</td>
+        </tr>
+        <tr>
+          <td>https://swicg.github.io/activitypub-api/scopes#readinbox</td>
+          <td>Read your inbox feed</td>
+          <td>Read the actor's <code>inbox</code> collection and collection pages, and any activities in that collection, including activities from remote servers, and their properties, like <code>actor</code> and <code>object</code>.</td>
+        </tr>
+        <tr>
+          <td>https://swicg.github.io/activitypub-api/scopes#readoutbox</td>
+          <td>Read your outbox feed</td>
+          <td>Read the actor's <code>outbox</code> collection and collection pages, and any activities in that collection, and their properties, like <code>actor</code> and <code>object</code>.</td>
+        </tr>
+        <tr>
+          <td>https://swicg.github.io/activitypub-api/scopes#readfollowers</td>
+          <td>See who follows you</td>
+          <td>Read the actor's <code>followers</code> collection and collection pages, and any actors in that collection.</td>
+        </tr>
+        <tr>
+          <td>https://swicg.github.io/activitypub-api/scopes#readfollowing</td>
+          <td>See who you follow</td>
+          <td>Read the actor's <code>following</code> collection and collection pages, and any actors in that collection.</td>
+        </tr>
+        <tr>
+          <td>https://swicg.github.io/activitypub-api/scopes#readliked</td>
+          <td>See what you've liked</td>
+          <td>Read the actor's <code>liked</code> collection and collection pages, and any objects in that collection.</td>
+        </tr>
+        <tr>
+          <td>https://swicg.github.io/activitypub-api/scopes#createcontent</td>
+          <td>Create new content</td>
+          <td>Make new notes, articles, images, videos, or audio.</td>
+        </tr>
+        <tr>
+          <td>https://swicg.github.io/activitypub-api/scopes#updatecontent</td>
+          <td>Edit existing content</td>
+          <td>Update existing notes, articles, images, videos, or audio, whether or not they were created with the same client.</td>
+        </tr>
+        <tr>
+          <td>https://swicg.github.io/activitypub-api/scopes#deletecontent</td>
+          <td>Delete content</td>
+          <td>Delete existing notes, articles, images, videos, or audio, whether or not they were created with the same client.</td>
+        </tr>
+        <tr>
+          <td>https://swicg.github.io/activitypub-api/scopes#follow</td>
+          <td>Follow and unfollow accounts</td>
+          <td>Follow local and remote accounts. Unfollow local and remote accounts.</td>
+        </tr>
+        <tr>
+          <td>https://swicg.github.io/activitypub-api/scopes#managefollowers</td>
+          <td>Accept, reject, and remove followers</td>
+          <td>Accept and reject local and remote follow requests. Remove local and remote followers.</td>
+        </tr>
+        <tr>
+          <td>https://swicg.github.io/activitypub-api/scopes#managecollections</td>
+          <td>Add items to and remove items from collections</td>
+          <td>For user-managed collections, add and remove items.</td>
+        </tr>
+        <tr>
+          <td>https://swicg.github.io/activitypub-api/scopes#like</td>
+          <td>Like and unlike content</td>
+          <td>Like notes, articles, video, audio, images, and other content. Undo those likes.</td>
+        </tr>
+        <tr>
+          <td>https://swicg.github.io/activitypub-api/scopes#share</td>
+          <td>Share and unshare content</td>
+          <td>Announce notes, articles, video, audio, images, and other content. Announce any activities. Undo those announcements.</td>
+        </tr>
+        <tr>
+          <td>https://swicg.github.io/activitypub-api/scopes#block</td>
+          <td>Block and unblock accounts</td>
+          <td>Block local and remote actors. Undo those blocks.</td>
+        </tr>
+        <tr>
+          <td>https://swicg.github.io/activitypub-api/scopes#flag</td>
+          <td>Report accounts</td>
+          <td>Flag local and remote accounts to the user's moderators and/or the accounts' moderators.</td>
+        </tr>
+        <tr>
+          <td>https://swicg.github.io/activitypub-api/scopes#reactlocal</td>
+          <td>Interact with content on your server</td>
+          <td>Like, announce, and reply to notes, articles, video, audio and images and other content on the actor's own server.</td>
+        </tr>
+        <tr>
+          <td>https://swicg.github.io/activitypub-api/scopes#reactany</td>
+          <td>Interact with content on any server</td>
+          <td>Like, announce, and reply to notes, articles, video, audio and images and other content on the actor's own server or remote servers.</td>
+        </tr>
+        <tr>
+          <td>https://swicg.github.io/activitypub-api/scopes#reactown</td>
+          <td>Interact with content on its own server</td>
+          <td>Like, announce, and reply to notes, articles, video, audio and images and other content on the same server as the CIMD identity of the client.</td>
+        </tr>
+        <tr>
+          <td>https://swicg.github.io/activitypub-api/scopes#addressall</td>
+          <td>Post to anyone</td>
+          <td>The client can include any addressee in the <code>to</code>, <code>cc</code>, <code>bcc</code>, <code>bto</code> or <code>audience</code> properties of a new activity.</td>
+        </tr>
+        <tr>
+          <td>https://swicg.github.io/activitypub-api/scopes#addresspublic</td>
+          <td>Post publicly</td>
+          <td>The client can include <code>as:Public</code> in the <code>to</code>, <code>cc</code>, <code>bcc</code>, <code>bto</code> or <code>audience</code> properties of a new activity.</td>
+        </tr>
+        <tr>
+          <td>https://swicg.github.io/activitypub-api/scopes#addressactor</td>
+          <td>Post privately</td>
+          <td>The client can include other actor's ids in the <code>to</code>, <code>cc</code>, <code>bcc</code>, <code>bto</code> or <code>audience</code> properties of a new activity.</td>
+        </tr>
+        <tr>
+          <td>https://swicg.github.io/activitypub-api/scopes#addressfollowers</td>
+          <td>Post to your followers</td>
+          <td>The client can include the actor's <code>followers</code> collection in the <code>to</code>, <code>cc</code>, <code>bcc</code>, <code>bto</code> or <code>audience</code> properties of a new activity.</td>
+        </tr>
+        <tr>
+          <td>https://swicg.github.io/activitypub-api/scopes#uploadfiles</td>
+          <td>Upload files</td>
+          <td>The client can use the MediaUpload endpoint.</td>
+        </tr>
+        <tr>
+          <td>https://swicg.github.io/activitypub-api/scopes#updateprofile</td>
+          <td>Change your profile, including your avatar</td>
+          <td>The client can update the actor's profile, adding or removing any properties in the profile, including the <code>icon</code> property.</td>
+        </tr>
+      </table>
     </section>
     <section id='pkce'>
       <h3>PKCE</h3>
