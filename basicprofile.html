@@ -170,7 +170,7 @@
         an authorization server. If such an external authorization server
         is not designated, Social API servers SHOULD act as
         their own authorization server.</p>
-      <p>Authorization Social API servers SHOULD use [[rfc8414]] to provide
+      <p>Authorization servers SHOULD use [[rfc8414]] to provide
         authorization server metadata. The metadata SHOULD include:</p>
       <ul>
         <li><code>authorization_endpoint</code></li>
@@ -194,20 +194,20 @@
       <p>Authorization servers MUST support the <a
           href="https://datatracker.ietf.org/doc/html/rfc6749#section-4.1">authorization
           code grant</a>.</p>
-      <p>Authorization Social API servers SHOULD support the <a
+      <p>Authorization servers SHOULD support the <a
           href="https://datatracker.ietf.org/doc/html/rfc6749#section-6">refresh
           token grant</a>.</p>
     </section>
     <section id='client-id'>
       <h3>Client IDs</h3>
-      <p>Authorization Social API servers SHOULD support <a
+      <p>Authorization servers SHOULD support <a
           href="https://datatracker.ietf.org/doc/draft-ietf-oauth-client-id-metadata-document/">
           Client ID Metadata Document</a> (CIMD) URLs as client ID.
-        Authorization Social API servers SHOULD declare support for CIMD in the
+        Authorization servers SHOULD declare support for CIMD in the
         authorization server metadata.</p>
       <p>Authorization servers MAY support <a
           href="https://codeberg.org/fediverse/fep/src/branch/main/fep/d8c2/fep-d8c2.md">
-          FEP-d8c2</a> URLs as client IDs. Authorization Social API servers SHOULD
+          FEP-d8c2</a> URLs as client IDs. Authorization servers SHOULD
         declare support for FEP-d8c2 in the authorization server metadata
         and in the actor object.</p>
       <p>Authorization servers MAY support [[rfc7591]] for dynamic client
@@ -369,7 +369,7 @@
     </section>
     <section id='pkce'>
       <h3>PKCE</h3>
-      <p>Authorization Social API servers SHOULD support [[rfc7636]] (PKCE) for
+      <p>Authorization servers SHOULD support [[rfc7636]] (PKCE) for
         public clients. Authorization servers that support PKCE SHOULD
         support the <code>S256</code> challenge method, and SHOULD declare
         support for the S256 challenge method in the authorization server
