@@ -53,7 +53,7 @@
     <h2>Introduction</h2>
     <p>[[ActivityPub]] defines a read-write application programming interface (API) for social networking in its
       sections on Objects, Actors, Collections, and Client-to-Server Interactions, called the <strong>social
-        API</strong>.</p>
+        API</strong>. Servers that implement the social API are <strong>social API servers</strong>.</p>
     <p>
       This document provides an additional profile of the social API to improve interoperability with API clients. The
       profile adds responsibilities to the social API server, including support for authorization and HTTP request
@@ -157,7 +157,7 @@
       resources. In the OAuth 2.0 Authorization Framework, ActivityPub
       social API servers act as a <em>resource server</em>. ActivityPub
       social API servers MAY designate a separate server as an
-      <em>authorization server</em> or act as their own authorization
+      <strong>authorization server</strong>, as defined by the OAuth 2.0 Authorization Framework, or act as their own authorization
       server.
     </p>
     <p>
@@ -184,7 +184,7 @@
           <code>activitypub_object_id_as_client_id</code>, or <code>registration_endpoint</code>
         </li>
       </ul>
-      <p>Authorization servers MAY use ActivityPub actor endpoints to
+      <p>Social API servers MAY use ActivityPub actor endpoints to
         declare the <code>oauthAuthorizationEndpoint</code>, <code>oauthTokenEndpoint</code>, and
         <code>oauthRegistrationEndpoint</code>.
       </p>
