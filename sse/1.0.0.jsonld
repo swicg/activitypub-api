@@ -1,0 +1,13 @@
+{
+  "@context": {
+    "sse": "https://swicg.github.io/activitypub-api/sse#",
+    "eventStream": {
+      "@id": "sse:eventStream",
+      "@type": "@id"
+    },
+    "proxyEventStream": {
+      "@id": "sse:proxyEventStream",
+      "@type": "@id"
+    }
+  }
+}
