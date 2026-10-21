@@ -9,6 +9,7 @@
 - [Issue tracker](https://github.com/swicg/activitypub-api/issues)
 - [Mailing list](https://lists.w3.org/Archives/Public/public-swicg/)
 - [Federated discussions: api@activitypub.space](https://activitypub.space/category/31/activitypub-api-task-force)
+- [Meeting](https://www.w3.org/events/meetings/0ea0eacd-4a15-4925-ab94-a1b442b81771/) on the third Wednesday of the month. The agenda is a GitHub issue with the [agenda](https://github.com/swicg/activitypub-api/issues?q=state%3Aopen%20label%3A%22agenda%22) label. Add a comment to the issue to add an item to the agenda!
 
 ## Introduction
 
