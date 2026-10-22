@@ -163,6 +163,11 @@
     <p>On failure, the endpoint SHOULD return a Problem Details document with <code>Content-Type</code> set to <code>application/problem+json</code>.</p>
     <p>If the item in the <code>item</code> parameter is not in the <code>items</code> or <code>orderedItems</code> list of any of the pages of the collection, nor the collection itself, the HTTP status code MUST be <code>404 Not Found</code>.</p>
     <p>The endpoint SHOULD support authentication methods commonly used with ActivityPub, including OAuth 2.0 and HTTP Signature.</p>
+    <div class="issue" data-number="86">
+      <p>Corner-cases around authorization and metadata leakage, trust & safety corner cases, and/or usecases where some kinds of Collections should be discouraged may alter this section, and/or privacy considerations and/or security considerations.
+        Input on the issue towards any of these issues would be especially appreciated.
+      </p>
+    </div>
     <p>If the authenticated user is not authorized to read the item in the <code>item</code> parameter, or the <code>Collection</code> or <code>CollectionPage</code> it is in, the HTTP status code MUST be <code>404 Not Found</code>. This prevents leaking information about the membership of an item in a collection.</p>
 
     <aside class="example">
