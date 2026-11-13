@@ -189,7 +189,7 @@
     <aside class="example">
       <p>An HTTP request seeking an item in a collection. The collection id is the same as the seek endpoint.</p>
       <pre class="http">
-       GET /user/nwqhFklGVSmJ-hvSQ-VPN/messages&item=https://other.example/message/71802ABA-379C-4661-A8C9-99AC8346BA49 HTTP/1.1
+       GET /user/nwqhFklGVSmJ-hvSQ-VPN/messages?item=https://other.example/message/71802ABA-379C-4661-A8C9-99AC8346BA49 HTTP/1.1
        Host: other.example
        Authorization: Bearer wwi-EeLvJRUee4XIJGWEu
       </pre>
@@ -211,7 +211,7 @@
           "type": "about:blank",
           "title": "Not Found",
           "status": 404,
-          "details": "item not found"
+          "detail": "item not found"
        }
       </pre>
     </aside>
@@ -225,7 +225,7 @@
           "type": "about:blank",
           "title": "Not Found",
           "status": 404,
-          "details": "item not found"
+          "detail": "item not found"
        }
       </pre>
     </aside>
