@@ -145,6 +145,32 @@
       <p>Social API servers SHOULD support the <a
           href="https://www.w3.org/wiki/SocialCG/ActivityPub/MediaUpload">MediaUpload</a> endpoint. Social API servers SHOULD
         accept, store, and distribute common Web binary file formats, including images, audio, and video.</p>
+      <dl>
+        <dt>Discovery</dt>
+        <dd>If provided, the <code>uploadMedia</code> endpoint MUST be advertised in the <a href="https://www.w3.org/TR/activitypub/#endpoints">endpoints</a> property of the ActivityPub <a href="https://www.w3.org/TR/activitypub/#actor">actor</a>.</dd>
+        <dt>Protocol</dt>
+        <dd>The uploadMedia endpoint MUST be an https: URI.</dd>
+        <dt>Authorization</dt>
+        <dd>The uploadMedia endpoint MUST support the <a href="#oauth">OAuth 2.0</a> authorization profile outlined in this document. The endpoint MAY support other authentication methods.</dd>
+        <dt>Request body</dt>
+        <dd>The uploadMedia endpoint MUST accept POST requests with content type <code>multipart/form-data</code> as defined in [[!RFC7578]]. The request body MUST have two parts:
+          <dl>
+            <dt>file</dt>
+            <dd>The data for the uploaded media. The <code>Content-Type</code> header MUST be present; it defines the type of data encoded.</dd>
+            <dt>object</dt>
+            <dd>An Activity Streams Document. The <code>Content-Type</code> must be either <code>application/activity+json</code> or its synonym <code>application/ld+json; profile="https://www.w3.org/ns/activitystreams"</code>. The object type of the document SHOULD be <a href="https://www.w3.org/TR/activitystreams-vocabulary/#dfn-create">Create</a> with an <code>object</code> property representing the uploaded file. The object type of the document MAY be an <a href="https://www.w3.org/TR/activitystreams-vocabulary/#object-types">object type</a> such as Article, Audio,
+            Image, Note, or Video, in which case the server MUST initialize a Create activity as in <a href="https://www.w3.org/TR/activitypub/#object-without-create">Object without Create</a>. The endpoint MAY support other Activity Streams object types.</dd>
+          </dl>
+        </dd>
+        <dt>Response headers</dt>
+        <dd>On success, the response status MUST be 201 Created. If the server has accepted the request but is processing it in the backgroun, the response status MUST be 202 Accepted. The <code>Location</code> header of the response MUST be the ActivityPub object identifier of the <code>Create</code> activity.</dd>
+        <dt>Error responses</dt>
+        <dd>On an error, the response body SHOULD be in Problem Details JSON format as defined in [[!RFC9457]].</dd>
+        <dt>Create activity</dt>
+        <dd>The endpoint MUST include an <code>id</code> property for the Create activity and its <code>object</code> property. The endpoint MUST add an <code>url</code> property to the value of the <code>object</code> property representing the uploaded file.</dd>
+        <dt>Authorization</dt>
+        <dd>The uploaded file MUST have the same authorization as the ActivityPub object that represents it. The file MUST be readable by its creator and MUST be readable by all actors addressed in the <code>Create</code> activity, either explicitly or as members of a <code>Collection</code>. The uploaded file SHOULD NOT be readable by actors not addressed in the <code>Create</code> activity explicitly or implicitly.</dd>
+      </dl>
     </section>
     <section id='remote-object-access'>
       <h3>Remote object access</h3>
