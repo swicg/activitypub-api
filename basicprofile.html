@@ -150,6 +150,22 @@
       <h3>Remote object access</h3>
       <p>Social API servers SHOULD provide a <a href="https://www.w3.org/TR/activitypub/#proxyUrl">proxyUrl</a>
         endpoint.</p>
+      <dl>
+        <dt>Discovery</dt>
+        <dd>If provided, the proxyUrl endpoint MUST be advertised in the <a href="https://www.w3.org/TR/activitypub/#endpoints">endpoints</a> property of the ActivityPub <a href="https://www.w3.org/TR/activitypub/#actor">actor</a>.</dd>
+        <dt>Protocol</dt>
+        <dd>The proxyUrl endpoint MUST be an https: URI.</dd>
+        <dt>Authorization</dt>
+        <dd>The proxyUrl endpoint MUST support the <a href="#oauth">OAuth 2.0</a> authorization profile outlined in this document. The endpoint MAY support other authentication methods.</dd>
+        <dt>Request body</dt>
+        <dd>The proxyUrl endpoint MUST accept POST requests with content type <a data-cite="!URL#concept-urlencoded">application/x-www-form-urlencoded</a>. The proxyUrl endpoint MUST accept the <code>id</code> parameter as an ActivityPub <a href="https://w3c.github.io/activitypub/#obj-id">object identifier</a> to be dereferenced. The proxyUrl endpoint MUST ignore unrecognized parameters and MUST continue processing as if they were not provided.</dd>
+        <dt>Response headers</dt>
+        <dd>On a successful response, the response <code>Content-Type</code> MUST be either <code>application/activity+json</code> or its synonym, <code>application/ld+json; profile="https://www.w3.org/ns/activitystreams"</code>.</dd>
+        <dt>Response body</dt>
+        <dd>On a successful response, the response body MUST be the dereferenced Activity Streams Document as <a href="https://w3c.github.io/activitypub/#retrieving-objects">retrieved</a> with the ActivityPub object identifier from the <code>id</code> parameter using <a href="https://www.w3.org/community/reports/socialcg/CG-FINAL-apsig-20240607/">HTTP Signature</a> authorization with the requesting actor's key. The Activity Streams Document MAY be cached by the server for future re-use, but in this case the server MUST use HTTP Caching [[!RFC9111]] semantics to ensure freshness.</dd>
+        <dt>Error responses</dt>
+        <dd>On an error, the response body SHOULD be in Problem Details JSON format as defined in [[!RFC9457]]. If retrieving the ActivityPub object results in a 404 Not Found, 403 Forbidden, or 410 Gone status, the endpoint status SHOULD be identical. If the connection to the remote server times out, the status code SHOULD be 504 Gateway Timeout. If retrieval results in other 500-series errors, or the server is otherwise unreachable, the status code SHOULD be 502 Bad Gateway. If the retrieval results in 400-series errors, the status code SHOULD be 500 Internal Server Error.</dd>
+      </dl>
     </section>
   </section>
   <section id='oauth'>
